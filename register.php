@@ -1,3 +1,51 @@
+<?php
+
+$host = "localhost";
+$user = "root";
+$password = "";
+$db="user";
+
+session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+if($data===false)
+{
+    die("connection error");
+    //die("Connection failed: " . mysqli_connect_error());
+}
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $username=$_POST["username"];
+    $password=$_POST["password"];
+    $email=$_POST["email"];
+
+    $sql="select * from user where username='".$username."'AND password='".$password."'";
+
+    $result=mysqli_query($data,$sql);
+
+    $row=mysqli_fetch_array($result);
+
+    if($row["usertype"]=="user")
+    {
+        $_SESSION["username"]=$username;
+        header("location:userhome.php");
+    }
+    elseif($row["usertype"]=="admin")
+    {
+        $_SESSION["username"]=$username;
+        header("location:adminhome.php");
+    }
+    else
+    {
+        echo "username or password is incorrect";
+    }
+
+}
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,7 +66,6 @@
             border: 2px #3f7778 solid;
             padding: 20px;
         }
-
 
 
     </style>
