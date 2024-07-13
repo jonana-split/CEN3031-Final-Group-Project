@@ -59,7 +59,7 @@
 <!-- CITE and change up the styling here and above a little: https://www.youtube.com/watch?v=ShbHwaiyOps -->
 
 <br>
-<h3 style="text-align: center; color: #3f7778">Log In</h3>
+<h3 style="text-align: center; color: #3f7778">Register</h3>
 <form class="" action="register.php">
     <div class="input-group">
         <label style="padding: 5px; margin: 5px;text-align: left; ">Username</label>
@@ -71,10 +71,15 @@
         <input style="padding: 5px; margin: 5px; width: 100%" type="text" name="password">
     </div>
 
+    <div class="input-group" >
+        <label style="padding: 5px; margin: 5px;text-align: left; ">Email</label>
+        <input style="padding: 5px; margin: 5px; width: 100%" type="text" name="email">
+    </div>
+
     <br>
 
     <div class="input-group justify-content-center" >
-        <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="regAccount">Log In</button>
+        <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="regAccount">Register</button>
     </div>
 </form>
 
