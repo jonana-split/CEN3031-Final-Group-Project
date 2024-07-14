@@ -1,3 +1,10 @@
+#!/usr/local/bin/php
+
+<?php
+session_start();
+define('__HEADER_FOOTER_PHP__', true);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -18,6 +25,8 @@
 
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
+        <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
+
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">Create Ticket</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
@@ -64,7 +73,9 @@
         <p>
             Sign in below to get a quick response from our IT team.
         </p>
-        <button class="rounded h5" style = "color: #174142; border: 2px solid #3f7778; background-color: #f0f8ff; padding: 5px" href="<?php echo "login.php" ?>">Sign In</button>
+
+        <button href="<?php echo "login.php" ?>" style = "color: #174142; border: 2px solid #3f7778;  display: inline-block; background-color: #f0f8ff; padding: 5px">Login</button>
+
         <br>
         <br>
     <?php endif; ?>
