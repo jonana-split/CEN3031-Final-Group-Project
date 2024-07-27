@@ -29,7 +29,7 @@ if(!isset($_SESSION["username"]))
 
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
+        <li class="nav-item" ><a class="nav-link" href="userhome.php" style="color: aliceblue; ">Home</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">Create Ticket</a></li>
 
