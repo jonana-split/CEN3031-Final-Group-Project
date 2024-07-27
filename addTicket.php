@@ -16,6 +16,7 @@ if(empty($_POST["description"])){
 $mysqli = require  __DIR__ . "/database.php";
 
 $date=date("Y-m-d");
+$status = "open";
 $sql= "INSERT INTO tickets (type, description, user, date, status) VALUES (?,?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();
@@ -23,7 +24,7 @@ if(!$stmt -> prepare($sql)){
     die("SQL error: .$mysqli->error");
 }
 
-$stmt->bind_param("ssss", $_POST["type"], $_POST["description"], $_SESSION["username"], $date);
+$stmt->bind_param("sssds", $_POST["type"], $_POST["description"], $_SESSION["username"], $date, $status);
 
 if($stmt->execute()){
     header("Location: userhome.php");

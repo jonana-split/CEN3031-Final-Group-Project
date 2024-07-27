@@ -32,13 +32,16 @@
 <section class="container grey-text">
     <h4 class="center">Add a Ticket</h4>
     <form class="white" action="addTicket.php" method="POST">
-        <label>Ticket Type</label>
-        <select name="type">
-            <option value="">Choose an option</option>
+        <label for="type">Ticket Type
+        <input list="types" name ="type" /></label>
+        <datalist id="types">
+            <option value="">Choose a Ticket Type</option>
             <option value="Hardware">Hardware</option>
             <option value="Software">Software</option>
             <option value="Network">Network</option>
-        </select>
+            <option value="Other">Other</option>
+        </datalist>
+        <br><br>
         <label>Description</label>
         <input type="text" name="description">
         <div class="center">
