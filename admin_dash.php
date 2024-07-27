@@ -1,24 +1,30 @@
 <?php
-
 $host = "127.0.0.1";
 $user = "root";
 $password = "";
 $db="login_it";
+
 session_start();
+define('__HEADER_FOOTER_PHP__', true);
+if(!isset($_SESSION["username"]))
+{
+    header("location:adminhome.php");
+}
+
 // Function to check if user is an admin
-function isAdmin() {
-    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
-}
+//function isAdmin() {
+//    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+//}
 // Redirect if not admin
-if (!isAdmin()) {
-    header('Location: login.php');
-    exit();
-}
+//if (!isAdmin()) {
+//    header('Location: login.php');
+//    exit();
+//}
 $data = mysqli_connect($host, $user, $password, $db);
-if ($data === false) {
-    //die("connection error");
-    die("Connection failed: " . mysqli_connect_error());
-}
+//if ($data === false) {
+//    //die("connection error");
+//    die("Connection failed: " . mysqli_connect_error());
+//}
 
 // Handle ticket updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
@@ -33,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     }
 }
 // Fetch all tickets
-$sql_tickets = "SELECT tickets.id, users.username, tickets.type, tickets.description, tickets.status, tickets.created_at 
-        FROM tickets 
-        JOIN users ON tickets.user_id = users.id";
+$sql_tickets = "SELECT tickets.id, tickets.type, tickets.description, tickets.user, tickets.date, tickets.status 
+        FROM tickets";
 $result_tickets = $data->query($sql_tickets);
 
 // Fetch ticket counts by status
@@ -55,7 +60,7 @@ $sql_resolved = "SELECT COUNT(*) AS total_resolved FROM tickets WHERE status = '
 $result_resolved = $data->query($sql_resolved);
 $total_resolved = $result_resolved->fetch_assoc()['total_resolved'];
 
-$sql_categories = "SELECT * FROM type";
+$sql_categories = "SELECT type FROM tickets";
 $result_categories = $data->query($sql_categories);
 ?>
 
@@ -91,35 +96,6 @@ $result_categories = $data->query($sql_categories);
     <div>Total On-Hold Tickets: <?php echo $total_on_hold; ?></div>
     <div>Total Tickets Resolved: <?php echo $total_resolved; ?></div>
 </div>
-<div class="category-management">
-    <h2>Manage Categories</h2>
-    <form method="POST" action="">
-        <input type="text" name="category_name" placeholder="Category Name" required>
-        <button type="submit" name="add_category">Add Category</button>
-    </form>
-    <h3>Existing Categories</h3>
-    <?php
-    if ($result_categories->num_rows > 0) {
-        echo "<table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Action</th>
-                    </tr>";
-        while ($row = $result_categories->fetch_assoc()) {
-            echo "<tr>
-                        <td>" . $row["id"] . "</td>
-                        <td>" . $row["name"] . "</td>
-                        <td><a href='?delete_category=" . $row["id"] . "' onclick='return confirm(\"Are you sure?\")'>Delete</a></td>
-                    </tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "No categories found.";
-    }
-    ?>
-
-</div>
 <div class="ticket-management">
     <h2>Manage Tickets</h2>
     <?php
@@ -127,24 +103,23 @@ if ($result_tickets->num_rows > 0) {
     echo "<table>
                 <tr>
                     <th>ID</th>
-                    <th>User</th>
-                    <th>Title</th>
+                    <th>Category</th>
                     <th>Description</th>
-                    <th>Status</th>
+                    <th>User</th>
                     <th>Created At</th>
-                    <th>Resolved At</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
                     <th>Action</th>
                 </tr>";
     // Output data of each row
     while ($row = $result_tickets->fetch_assoc()) {
         echo "<tr>
                     <td>" . $row["id"] . "</td>
-                    <td>" . $row["username"] . "</td>
-                    <td>" . $row["title"] . "</td>
+                    <td>" . $row["type"] . "</td>
                     <td>" . $row["description"] . "</td>
+                    <td>" . $row["user"] . "</td>
+                    <td>" . $row["date"] . "</td>
                     <td>" . $row["status"] . "</td>
-                    <td>" . $row["created_at"] . "</td>
-                    <td>" . $row["resolved_at"] . "</td>
                     <td>
                             <form method='POST' action=''>
                                 <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
