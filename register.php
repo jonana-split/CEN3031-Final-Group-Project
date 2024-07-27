@@ -1,42 +1,4 @@
-<?php
-
-$host = "127.0.0.1";
-$user = "root";
-$password = "";
-$db="login_it";
-
-session_start();
-
-$data = mysqli_connect($host, $user, $password, $db);
-if ($data === false) {
-    //die("connection error");
-    die("Connection failed: " . mysqli_connect_error());
-}
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST["username"];
-    $password = $_POST["password"];
-    $email = $_POST["email"];
-
-    $sql = "select * from user where username='" . $username . "'AND password='" . $password . "'";
-
-    $result = mysqli_query($data, $sql);
-
-    $row = mysqli_fetch_array($result);
-
-    if ($row["usertype"] == "user") {
-        $_SESSION["username"] = $username;
-        header("location:userhome.php");
-    } elseif ($row["usertype"] == "admin") {
-        $_SESSION["username"] = $username;
-        header("location:adminhome.php");
-    } else {
-        echo "username or password is incorrect";
-    }
-}
-?>
-
-
+#!/usr/local/bin/php
 
 <!DOCTYPE html>
 <html lang="en">
@@ -71,6 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
+        <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
+
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">Create Ticket</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
@@ -99,38 +63,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <br>
 <h3 style="text-align: center; color: #3f7778">Register</h3>
-<form action="#" method="POST">
-    <div>
-        <label>username</label>
-        <input type="text" name="username" required>
-    </div>
-    <br><br>
-
-    <div>
-        <label>password</label>
-        <input type="password" name="password" required>
-    </div>
-    <br><br>
-
-    <div>
-        <input type="submit" value="Login">
-    </div>
-
-</form>
-<!--<form class="" action="register.php"
+<form class="" action="createAccount.php" method="POST" novalidate>
     <div class="input-group">
         <label style="padding: 5px; margin: 5px;text-align: left; ">Username</label>
-        <input style="padding: 5px; margin: 5px; width: 100%" type="text" name="user">
+        <input style="padding: 5px; margin: 5px; width: 100%" type="text" id="username" name="username">
     </div>
 
     <div class="input-group" >
         <label style="padding: 5px; margin: 5px;text-align: left; ">Password</label>
-        <input style="padding: 5px; margin: 5px; width: 100%" type="text" name="password">
+        <input style="padding: 5px; margin: 5px; width: 100%" type="password" id="password" name="password">
+    </div>
+
+    <div class="input-group" >
+        <label style="padding: 5px; margin: 5px;text-align: left; ">Confirm Password</label>
+        <input style="padding: 5px; margin: 5px; width: 100%" type="password" id="passwordConfirm" name="passwordConfirm">
     </div>
 
     <div class="input-group" >
         <label style="padding: 5px; margin: 5px;text-align: left; ">Email</label>
-        <input style="padding: 5px; margin: 5px; width: 100%" type="text" name="email">
+        <input style="padding: 5px; margin: 5px; width: 100%" type="email" id="email" name="email">
     </div>
 
     <br>
@@ -138,7 +89,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="input-group justify-content-center" >
         <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="regAccount">Register</button>
     </div>
-</form>-->
+
+    <br>
+
+    <p style="text-align: center">Already have an account? <a href="register.php">Login here.</a></p>
+</form>
 
 <br>
 
