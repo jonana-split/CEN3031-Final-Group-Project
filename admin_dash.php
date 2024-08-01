@@ -98,7 +98,7 @@ $result_categories = $data->query($sql_categories);
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
-    <h3>iTicket</h3>
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="adminhome.php">iTicket</a>
 </div>
 
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
