@@ -36,7 +36,7 @@ if(!isset($_SESSION["username"]))
 
         <li class="nav-item" ><a class="nav-link" href="adminCreate.php" style="color: aliceblue; ">Register Users</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="admin_dash" style="color: aliceblue; ">View Tickets</a></li>
+        <li class="nav-item" ><a class="nav-link" href="admin_dash.php" style="color: aliceblue; ">View Tickets</a></li>
 
         <!--    TOOK THIS FROM CODE I WROTE IN A PREVIOUS PROJECT, have to edit it. JUST PROOF OF CONCEPT HERE -->
         <?php if (isset($_SESSION['username'])): ?>
