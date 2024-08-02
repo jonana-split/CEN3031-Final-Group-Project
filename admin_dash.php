@@ -8,7 +8,7 @@ session_start();
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
-    header("location:adminhome.php");
+    header("location:login.php");
 }
 
 // Function to check if user is an admin

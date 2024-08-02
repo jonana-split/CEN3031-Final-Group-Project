@@ -1,10 +1,23 @@
+#!/usr/local/bin/php
+<?php
+session_start();
+define('__HEADER_FOOTER_PHP__', true);
+if(!isset($_SESSION["username"]))
+{
+    header("location:login.php");
+}
+?>
+
 <!DOCTYPE html>
 <html>
 
 <head>
     <title>Debug Divas</title>
     <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <style type="text/css">
         .brand{
             background: #cbb09c !important;
@@ -20,13 +33,17 @@
     </style>
 </head>
 <body class="grey lighten-4">
-<nav class="white z-depth-0">
-    <div class="container">
-        <a href="#" class="brand-logo brand-text">Debug Divas</a>
-        <ul id="nav-mobile" class="right hide-on-small-and-down">
-            <li><a href="#" class="btn brand z-depth-0">Add a Ticket</a></li>
-        </ul>
-    </div>
+<nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
+    <ul class="navbar-nav">
+        <li class="nav-item" ><a class="nav-link" href="userhome.php" style="color: aliceblue; ">Home</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">View Past Tickets</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
+
+    </ul>
 </nav>
 
 <section class="container grey-text">
