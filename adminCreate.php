@@ -2,6 +2,10 @@
 <?php
 session_start();
 define('__HEADER_FOOTER_PHP__', true);
+if(!isset($_SESSION["username"]))
+{
+    header("location:login.php");
+}
 ?>
 
 <!DOCTYPE html>
