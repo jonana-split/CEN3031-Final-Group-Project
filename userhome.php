@@ -22,8 +22,8 @@ $ticket_history_query = "SELECT * FROM tickets WHERE user = '$user' AND status =
 $ticket_history_result = $data->query($ticket_history_query);
 
 // Fetch chat history
-$chat_history_query = "SELECT * FROM chats WHERE from_user = '$user'";
-$chat_history_result = $data->query($chat_history_query);
+//$chat_history_query = "SELECT * FROM chats WHERE from_user = '$user'";
+//$chat_history_result = $data->query($chat_history_query);
 ?>
 
 <!DOCTYPE html>

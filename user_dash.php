@@ -12,17 +12,18 @@ if(!isset($_SESSION["username"]))
     header("location:login.php");
 }
 $data = mysqli_connect($host, $user, $password, $db);
+$username = $_SESSION["username"];
 
 // Fetch active tickets
-$active_tickets_query = "SELECT * FROM tickets WHERE user = '$user' AND status != 'closed'";
+$active_tickets_query = "SELECT * FROM tickets WHERE tickets.user = '$username' AND status != 'closed'";
 $active_tickets_result = $data->query($active_tickets_query);
 
 // Fetch ticket history
-$ticket_history_query = "SELECT * FROM tickets WHERE user = '$user' AND status = 'closed'";
+$ticket_history_query = "SELECT * FROM tickets WHERE tickets.user = '$username' AND status = 'closed'";
 $ticket_history_result = $data->query($ticket_history_query);
 
 // Fetch chat history
-$chat_history_query = "SELECT * FROM chats WHERE from_user = '$user'";
+$chat_history_query = "SELECT * FROM chats WHERE from_user = '$username'";
 $chat_history_result = $data->query($chat_history_query);
 
 $sql_tickets = "SELECT tickets.id, tickets.type, tickets.description, tickets.user, tickets.date, tickets.status 
@@ -96,7 +97,7 @@ $result_tickets = $data->query($sql_tickets);
     ?>
     <hr>
 
-    <h5>Chat History</h5>
+<!--    <h5>Chat History</h5>-->
 
     <?php
 

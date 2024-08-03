@@ -23,19 +23,19 @@ $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
 // Fetch employee schedule
-$schedule_query = "SELECT * FROM schedules WHERE user_id = '$user_id'";
-$schedule_result = $data->query($schedule_query);
+//$schedule_query = "SELECT * FROM schedules WHERE username = '$username'";
+//$schedule_result = $data->query($schedule_query);
 
 // Fetch assigned tickets
-$assigned_tickets_query = "SELECT * FROM tickets WHERE assigned_to = '$username'";
+$assigned_tickets_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
 $assigned_tickets_result = $data->query($assigned_tickets_query);
 
 // Fetch chat history
-$chat_history_query = "SELECT * FROM chats WHERE employee = '$username' OR user = '$username'";
-$chat_history_result = $data->query($chat_history_query);
+//$chat_history_query = "SELECT * FROM chats WHERE from_user = $username";
+//$chat_history_result = $data->query($chat_history_query);
 
 // Fetch logged hours
-$logged_hours_query = "SELECT * FROM time_logs WHERE user_id = '$user_id'";
+$logged_hours_query = "SELECT * FROM tickets WHERE user = '$username'";
 $logged_hours_result = $data->query($logged_hours_query);
 
 // Handle ticket updates
@@ -131,11 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 events: [
-                    <?php
-                    while ($row = $schedule_result->fetch_assoc()) {
-                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
-                    }
-                    ?>
+<!--                    --><?php
+//                    while ($row = $schedule_result->fetch_assoc()) {
+//                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
+//                    }
+//                    ?>
                 ]
             });
             calendar.render();
@@ -185,17 +185,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     <hr>
 
     <h5>Chat History</h5>
-    <?php
-    if ($chat_history_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
-        while ($row = $chat_history_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "<p>No chat history found.</p>";
-    }
-    ?>
+<!--    --><?php
+//    if ($chat_history_result->num_rows > 0) {
+//        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
+//        while ($row = $chat_history_result->fetch_assoc()) {
+//            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
+//        }
+//        echo "</table>";
+//    } else {
+//        echo "<p>No chat history found.</p>";
+//    }
+//    ?>
     <hr>
 
     <h5>Logged Hours</h5>
@@ -203,7 +203,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     if ($logged_hours_result->num_rows > 0) {
         echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours</th><th>Date Logged</th></tr>";
         while ($row = $logged_hours_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["ticket_id"] . "</td><td>" . $row["hours"] . "</td><td>" . $row["date_logged"] . "</td></tr>";
+            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["logged_hours"] . "</td><td>" . $row["date"] . "</td></tr>";
         }
         echo "</table>";
     } else {
