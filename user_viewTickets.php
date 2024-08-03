@@ -1,13 +1,19 @@
 #!/usr/local/bin/php
-
 <?php
-session_start();
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
 
+session_start();
+define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
     header("location:login.php");
 }
+
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -18,7 +24,8 @@ if(!isset($_SESSION["username"]))
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <title>iTicket</title>
+    <title>View Tickets</title>
+
 </head>
 
 <body style="font-family: K2D; background-color: #e0f2f3">
@@ -40,30 +47,11 @@ if(!isset($_SESSION["username"]))
     </ul>
 </nav>
 
+<!-- PAGE FOR EACH TICKET -->
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
-    <h5>Need to create an IT ticket?</h5>
-    <h3>iTicket has you covered!</h3>
-    <br>
-    <!--    MAKE THIS ONLY ACCESSIBLE WHEN UR LOGGED IN -->
-    <?php if (isset($_SESSION['username'])): ?>
-        <p>
-            Submit a ticket below to get a quick response from our IT team.
-        </p>
-        <br>
-        <button>Create Ticket</button>
-        <br>
-        <br>
-        <br>
-        <p>Want to chat with us before creating a ticket?</p>
-        <p>Use our LiveChat feature!</p>
-        <br>
-        <button>Live Chat</button>
+    <h3>View Tickets</h3>
 
-    <?php endif; ?>
 
-    <br>
-
-    <a href="logout.php"> Logout :D </a>
 
 </div>
 
@@ -76,3 +64,5 @@ if(!isset($_SESSION["username"]))
 </body>
 
 </html>
+
+

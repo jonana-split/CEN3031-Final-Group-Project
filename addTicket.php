@@ -24,7 +24,7 @@ if(!$stmt -> prepare($sql)){
     die("SQL error: .$mysqli->error");
 }
 
-$stmt->bind_param("sssds", $_POST["type"], $_POST["description"], $_SESSION["username"], $date, $status);
+$stmt->bind_param("sssss", $_POST["type"], $_POST["description"], $_SESSION["username"], $date, $status);
 
 if($stmt->execute()){
     header("Location: userhome.php");

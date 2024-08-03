@@ -1,24 +1,30 @@
 <?php
-
 $host = "127.0.0.1";
 $user = "root";
 $password = "";
 $db="login_it";
+
 session_start();
+define('__HEADER_FOOTER_PHP__', true);
+if(!isset($_SESSION["username"]))
+{
+    header("location:login.php");
+}
+
 // Function to check if user is an admin
-function isAdmin() {
-    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
-}
+//function isAdmin() {
+//    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
+//}
 // Redirect if not admin
-if (!isAdmin()) {
-    header('Location: login.php');
-    exit();
-}
+//if (!isAdmin()) {
+//    header('Location: login.php');
+//    exit();
+//}
 $data = mysqli_connect($host, $user, $password, $db);
-if ($data === false) {
-    //die("connection error");
-    die("Connection failed: " . mysqli_connect_error());
-}
+//if ($data === false) {
+//    //die("connection error");
+//    die("Connection failed: " . mysqli_connect_error());
+//}
 
 // Handle ticket updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
@@ -33,9 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     }
 }
 // Fetch all tickets
-$sql_tickets = "SELECT tickets.id, users.username, tickets.type, tickets.description, tickets.status, tickets.created_at 
-        FROM tickets 
-        JOIN users ON tickets.user_id = users.id";
+$sql_tickets = "SELECT tickets.id, tickets.type, tickets.description, tickets.user, tickets.date, tickets.status 
+        FROM tickets";
 $result_tickets = $data->query($sql_tickets);
 
 // Fetch ticket counts by status
@@ -55,14 +60,14 @@ $sql_resolved = "SELECT COUNT(*) AS total_resolved FROM tickets WHERE status = '
 $result_resolved = $data->query($sql_resolved);
 $total_resolved = $result_resolved->fetch_assoc()['total_resolved'];
 
-$sql_categories = "SELECT * FROM type";
+$sql_categories = "SELECT type FROM tickets";
 $result_categories = $data->query($sql_categories);
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - View Tickets</title>
     <style>
         table {
             width: 100%;
@@ -82,43 +87,54 @@ $result_categories = $data->query($sql_categories);
             margin: 5px 0;
         }
     </style>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
-<body>
+
+<body style="font-family: K2D; background-color: #e0f2f3">
+
+<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="adminhome.php">iTicket</a>
+</div>
+
+<nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
+    <ul class="navbar-nav">
+        <li class="nav-item" ><a class="nav-link" href="adminhome.php" style="color: aliceblue; ">Home</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="adminCreate.php" style="color: aliceblue; ">Register Users</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="admin_dash.php" style="color: aliceblue; ">View Tickets</a></li>
+
+        <!--    TOOK THIS FROM CODE I WROTE IN A PREVIOUS PROJECT, have to edit it. JUST PROOF OF CONCEPT HERE -->
+        <?php if (isset($_SESSION['username'])): ?>
+            <div class="dropdown">
+                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php echo $_SESSION['username'] ?>'s Account
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "user_viewTickets.php" ?>">Dashboard</a></li>
+                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "logout.php" ?>">LogOut</a></li>
+                </ul>
+            </div>
+        <?php else: ?>
+            <li class="nav-item" ><a class="nav-link rounded" href="<?php echo "login.php" ?>" style = "color: #174142; border: 2px solid #3f7778;  display: inline-block; background-color: #f0f8ff; padding: 5px"> Login</a></li>
+        <?php endif; ?>
+
+    </ul>
+</nav>
+
 <h1>Admin Dashboard</h1>
 <div class="stats">
     <div>Total New Tickets: <?php echo $total_new; ?></div>
     <div>Total In-Process Tickets: <?php echo $total_in_process; ?></div>
     <div>Total On-Hold Tickets: <?php echo $total_on_hold; ?></div>
     <div>Total Tickets Resolved: <?php echo $total_resolved; ?></div>
-</div>
-<div class="category-management">
-    <h2>Manage Categories</h2>
-    <form method="POST" action="">
-        <input type="text" name="category_name" placeholder="Category Name" required>
-        <button type="submit" name="add_category">Add Category</button>
-    </form>
-    <h3>Existing Categories</h3>
-    <?php
-    if ($result_categories->num_rows > 0) {
-        echo "<table>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Action</th>
-                    </tr>";
-        while ($row = $result_categories->fetch_assoc()) {
-            echo "<tr>
-                        <td>" . $row["id"] . "</td>
-                        <td>" . $row["name"] . "</td>
-                        <td><a href='?delete_category=" . $row["id"] . "' onclick='return confirm(\"Are you sure?\")'>Delete</a></td>
-                    </tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "No categories found.";
-    }
-    ?>
-
 </div>
 <div class="ticket-management">
     <h2>Manage Tickets</h2>
@@ -127,24 +143,23 @@ if ($result_tickets->num_rows > 0) {
     echo "<table>
                 <tr>
                     <th>ID</th>
-                    <th>User</th>
-                    <th>Title</th>
+                    <th>Category</th>
                     <th>Description</th>
-                    <th>Status</th>
+                    <th>User</th>
                     <th>Created At</th>
-                    <th>Resolved At</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
                     <th>Action</th>
                 </tr>";
     // Output data of each row
     while ($row = $result_tickets->fetch_assoc()) {
         echo "<tr>
                     <td>" . $row["id"] . "</td>
-                    <td>" . $row["username"] . "</td>
-                    <td>" . $row["title"] . "</td>
+                    <td>" . $row["type"] . "</td>
                     <td>" . $row["description"] . "</td>
+                    <td>" . $row["user"] . "</td>
+                    <td>" . $row["date"] . "</td>
                     <td>" . $row["status"] . "</td>
-                    <td>" . $row["created_at"] . "</td>
-                    <td>" . $row["resolved_at"] . "</td>
                     <td>
                             <form method='POST' action=''>
                                 <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
