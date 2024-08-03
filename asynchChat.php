@@ -1,11 +1,23 @@
 #!/usr/local/bin/php
 <?php
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
+
 session_start();
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
     header("location:login.php");
 }
+
+
+$data = mysqli_connect($host, $user, $password, $db);
+
+$sql_tickets = "SELECT chats.id, chats.to_user, chats.from_user, chats.time, chats.ticket_id FROM chats";
+$result_chats = $data->query($sql_tickets);
+
 ?>
 
 <!--Users-->
@@ -33,40 +45,60 @@ if(!isset($_SESSION["username"]))
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="userhome.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
+        <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="adminCreate.php" style="color: aliceblue; ">Register Users</a></li>
+        <li class="nav-item" ><a class="nav-link" href="user_viewTickets.php" style="color: aliceblue; ">View Past Tickets</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="admin_dash.php" style="color: aliceblue; ">View Tickets</a></li>
-
-        <!--    TOOK THIS FROM CODE I WROTE IN A PREVIOUS PROJECT, have to edit it. JUST PROOF OF CONCEPT HERE -->
-        <?php if (isset($_SESSION['username'])): ?>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo $_SESSION['username'] ?>'s Account
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "user_viewTickets.php" ?>">Dashboard</a></li>
-                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "logout.php" ?>">LogOut</a></li>
-                </ul>
-            </div>
-        <?php else: ?>
-            <li class="nav-item" ><a class="nav-link rounded" href="<?php echo "login.php" ?>" style = "color: #174142; border: 2px solid #3f7778;  display: inline-block; background-color: #f0f8ff; padding: 5px"> Login</a></li>
-        <?php endif; ?>
+        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
 
     </ul>
 </nav>
 
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
-    <h5>Register Users Here</h5>
-    <h3>Create Admins, Employees, and Users</h3>
-    <br>
 
-    <p style="text-align: center"><a href="adminCreate.php">Register Users</a></p>
+    <!-- adjust for chat updates -->
 
-    <br>
-
-    <a href="logout.php"> Logout :D </a>
+    <?php
+    if ($result_chats->num_rows > 0) {
+        echo "<table>
+                <tr>
+                    <th>ID</th>
+                    <th>Category</th>
+                    <th>Description</th>
+                    <th>User</th>
+                    <th>Created At</th>
+                    <th>Status</th>
+                    <th>Change Status</th>
+                    <th>Action</th>
+                </tr>";
+        // Output data of each row
+        while ($row = $result_chats->fetch_assoc()) {
+            echo "<tr>
+                    <td>" . $row["id"] . "</td>
+                    <td>" . $row["type"] . "</td>
+                    <td>" . $row["description"] . "</td>
+                    <td>" . $row["user"] . "</td>
+                    <td>" . $row["date"] . "</td>
+                    <td>" . $row["status"] . "</td>
+                    <td>
+                            <form method='POST' action=''>
+                                <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
+                                <select name='status'>
+                                    <option value='open'" . ($row["status"] === 'open' ? ' selected' : '') . ">Open</option>
+                                    <option value='in-process'" . ($row["status"] === 'in-process' ? ' selected' : '') . ">In-Process</option>
+                                    <option value='on-hold'" . ($row["status"] === 'on-hold' ? ' selected' : '') . ">On-Hold</option>
+                                    <option value='closed'" . ($row["status"] === 'closed' ? ' selected' : '') . ">Resolved</option>
+                                </select>
+                                <button type='submit' name='update_ticket'>Update</button>
+                            </form>
+                        </td>
+                </tr>";
+        }
+        echo "</table>";
+    } else {
+        echo "No tickets found";
+    }
+    ?>
 
 </div>
 
