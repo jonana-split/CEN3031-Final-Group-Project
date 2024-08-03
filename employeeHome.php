@@ -35,7 +35,7 @@ $assigned_tickets_result = $data->query($assigned_tickets_query);
 //$chat_history_result = $data->query($chat_history_query);
 
 // Fetch logged hours
-$logged_hours_query = "SELECT * FROM tickets WHERE user = '$username'";
+$logged_hours_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
 $logged_hours_result = $data->query($logged_hours_query);
 
 // Handle ticket updates
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $status = $data->real_escape_string($_POST['status']);
     $resolved_at = ($status === 'closed') ? 'NOW()' : 'NULL';
-    $sql = "UPDATE tickets SET status = '$status', resolved_at = $resolved_at WHERE id = $ticket_id";
+    $sql = "UPDATE tickets SET status = '$status' WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Ticket updated successfully.";
     } else {
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['log_hours'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $hours = floatval($_POST['hours']);
-    $sql = "INSERT INTO time_logs (user_id, ticket_id, hours) VALUES ('$user_id', '$ticket_id', '$hours')";
+    $sql = "UPDATE tickets SET logged_hours = $hours WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Hours logged successfully.";
     } else {
@@ -66,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['log_hours'])) {
 // Handle time estimates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     $ticket_id = intval($_POST['ticket_id']);
-    $estimated_hours = floatval($_POST['estimated_hours']);
-    $sql = "UPDATE tickets SET estimated_hours = '$estimated_hours' WHERE id = $ticket_id";
+    $estimated_hours = $_POST['estimated_hours'];
+    $sql = "UPDATE tickets SET time_estimate = '$estimated_hours' WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Time estimate updated successfully.";
     } else {
@@ -129,9 +129,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     <h5 style="text-align: center">Assigned Tickets</h5>
     <?php
     if ($assigned_tickets_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Priority</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th></tr>";
         while ($row = $assigned_tickets_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["priority"] . "</td>
+            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td>
             <td>
                 <form method='POST' action=''>
                     <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             <td>
                 <form method='POST' action=''>
                     <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
-                    <input type='number' name='estimated_hours' step='0.1' min='0' required value='" . $row["estimated_hours"] . "'>
+                    <input type='number' name='estimated_hours' step='0.1' min='0' required value='" . $row["time_estimate"] . "'>
                     <button type='submit' name='estimate_time' class='btn btn-info'>Estimate Time</button>
                 </form>
             </td>
@@ -195,10 +195,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     ?>
 </div>
 
+
+<!-- <hr style="width: 75%; margin: auto; background-color: #3f7778">
+-->
+
+<div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
+    <a href="logout.php"> Logout :D </a>
+
+</div>
+
+<br>
+
 <footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">
+
     <p>&copy Debug Divas 2024</p>
     <p>CEN3031 Final Project</p>
-</footer>
 
+</footer>
 </body>
+
 </html>
