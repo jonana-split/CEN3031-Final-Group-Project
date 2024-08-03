@@ -1,12 +1,29 @@
 #!/usr/local/bin/php
 
 <?php
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
 session_start();
 
 if(!isset($_SESSION["username"]))
 {
     header("location:login.php");
 }
+$data = mysqli_connect($host, $user, $password, $db);
+
+// Fetch active tickets
+$active_tickets_query = "SELECT * FROM tickets WHERE user = '$user' AND status != 'closed'";
+$active_tickets_result = $data->query($active_tickets_query);
+
+// Fetch ticket history
+$ticket_history_query = "SELECT * FROM tickets WHERE user = '$user' AND status = 'closed'";
+$ticket_history_result = $data->query($ticket_history_query);
+
+// Fetch chat history
+$chat_history_query = "SELECT * FROM chats WHERE from_user = '$user'";
+$chat_history_result = $data->query($chat_history_query);
 ?>
 
 <!DOCTYPE html>
@@ -33,7 +50,7 @@ if(!isset($_SESSION["username"]))
 
         <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="user_viewTickets.php" style="color: aliceblue; ">View Past Tickets</a></li>
+        <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
 

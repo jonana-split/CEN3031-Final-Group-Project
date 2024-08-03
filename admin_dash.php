@@ -11,20 +11,17 @@ if(!isset($_SESSION["username"]))
     header("location:login.php");
 }
 
-// Function to check if user is an admin
-//function isAdmin() {
-//    return isset($_SESSION['user_role']) && $_SESSION['user_role'] === 'admin';
-//}
-// Redirect if not admin
-//if (!isAdmin()) {
-//    header('Location: login.php');
-//    exit();
-//}
 $data = mysqli_connect($host, $user, $password, $db);
-//if ($data === false) {
-//    //die("connection error");
-//    die("Connection failed: " . mysqli_connect_error());
-//}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
+    $user = $data->real_escape_string($_POST['user_id']);
+    $sql = "DELETE FROM users WHERE id = '$user' OR username = '$user'";
+    if ($data->query($sql) === TRUE) {
+        echo "User account deleted successfully.";
+    } else {
+        echo "Error deleting user: " . $data->error;
+    }
+}
 
 // Handle ticket updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
@@ -136,6 +133,21 @@ $result_categories = $data->query($sql_categories);
     <div>Total On-Hold Tickets: <?php echo $total_on_hold; ?></div>
     <div>Total Tickets Resolved: <?php echo $total_resolved; ?></div>
 </div>
+
+<br>
+<h3 style="text-align: center; color: #3f7778">Delete User Account</h3>
+<form action="" method="POST" novalidate>
+    <div class="input-group">
+        <label style="padding: 5px; margin: 5px;text-align: left;">User ID or Username</label>
+        <input style="padding: 5px; margin: 5px; width: 100%" type="text" id="user_id" name="user_id" required>
+    </div>
+
+    <div class="input-group justify-content-center">
+        <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="delete_user" class="btn btn-danger">Delete User</button>
+    </div>
+</form>
+
+<br>
 <div class="ticket-management">
     <h2>Manage Tickets</h2>
     <?php
