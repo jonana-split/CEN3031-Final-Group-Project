@@ -23,8 +23,8 @@ $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
 // Fetch employee schedule
-//$schedule_query = "SELECT * FROM schedules WHERE username = '$username'";
-//$schedule_result = $data->query($schedule_query);
+$schedule_query = "SELECT * FROM tickets WHERE user = '$username'";
+$schedule_result = $data->query($schedule_query);
 
 // Fetch assigned tickets
 $assigned_tickets_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
@@ -131,11 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
                 events: [
-<!--                    --><?php
-//                    while ($row = $schedule_result->fetch_assoc()) {
-//                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
-//                    }
-//                    ?>
+<?php
+                    while ($row = $schedule_result->fetch_assoc()) {
+                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
+                    }
+                    ?>
                 ]
             });
             calendar.render();
