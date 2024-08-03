@@ -23,19 +23,19 @@ $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
 // Fetch employee schedule
-$schedule_query = "SELECT * FROM schedules WHERE user_id = '$user_id'";
-$schedule_result = $data->query($schedule_query);
+//$schedule_query = "SELECT * FROM schedules WHERE username = '$username'";
+//$schedule_result = $data->query($schedule_query);
 
 // Fetch assigned tickets
-$assigned_tickets_query = "SELECT * FROM tickets WHERE assigned_to = '$username'";
+$assigned_tickets_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
 $assigned_tickets_result = $data->query($assigned_tickets_query);
 
 // Fetch chat history
-$chat_history_query = "SELECT * FROM chats WHERE employee = '$username' OR user = '$username'";
-$chat_history_result = $data->query($chat_history_query);
+//$chat_history_query = "SELECT * FROM chats WHERE from_user = $username";
+//$chat_history_result = $data->query($chat_history_query);
 
 // Fetch logged hours
-$logged_hours_query = "SELECT * FROM time_logs WHERE user_id = '$user_id'";
+$logged_hours_query = "SELECT * FROM tickets WHERE user = '$username'";
 $logged_hours_result = $data->query($logged_hours_query);
 
 // Handle ticket updates
@@ -108,47 +108,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px; background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employee_dashboard.php">iTicket</a>
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employeeHome.php">iTicket</a>
 </div>
+
 
 <nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="employee_dashboard.php" style="color: aliceblue;">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="employeeHome.php" style="color: aliceblue;">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="logout.php" style="color: aliceblue;">Logout</a></li>
     </ul>
 </nav>
 
+
 <div class="section">
     <h3 style="text-align: center; color: #3f7778">Employee Dashboard</h3>
-    <h4>Welcome, <?php echo $user['username']; ?>!</h4>
+    <h4 style="text-align: center">Welcome, <?php echo $user['username']; ?>!</h4>
     <hr>
 
-    <h5>Availability/Scheduling</h5>
-    <div id="calendar"></div>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                events: [
-                    <?php
-                    while ($row = $schedule_result->fetch_assoc()) {
-                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
-                    }
-                    ?>
-                ]
-            });
-            calendar.render();
-        });
-    </script>
+    <h5 style="text-align: center"><a href="calendar.php">Availability/Scheduling</a></h5>
     <hr>
 
-    <h5>Assigned Tickets</h5>
+    <h5 style="text-align: center">Assigned Tickets</h5>
     <?php
     if ($assigned_tickets_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Priority</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Priority</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th><th>Chat</th></tr>";
         while ($row = $assigned_tickets_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["priority"] . "</td>
+            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["priority"] . "</td> 
             <td>
                 <form method='POST' action=''>
                     <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
@@ -157,6 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
                         <option value='in-process'" . ($row["status"] === 'in-process' ? ' selected' : '') . ">In-Process</option>
                         <option value='on-hold'" . ($row["status"] === 'on-hold' ? ' selected' : '') . ">On-Hold</option>
                         <option value='closed'" . ($row["status"] === 'closed' ? ' selected' : '') . ">Resolved</option>
+                    
                     </select>
                     <button type='submit' name='update_ticket' class='btn btn-primary'>Update</button>
                 </form>
@@ -175,6 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
                     <button type='submit' name='estimate_time' class='btn btn-info'>Estimate Time</button>
                 </form>
             </td>
+            <td><button onclick=\"location.href='e_asynchChat.php?id=".$row['id']."&user=".$row['user']."'\">Chat</button></td>
             </tr>";
         }
         echo "</table>";
@@ -184,26 +171,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     ?>
     <hr>
 
-    <h5>Chat History</h5>
-    <?php
-    if ($chat_history_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
-        while ($row = $chat_history_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "<p>No chat history found.</p>";
-    }
-    ?>
+    <h5 style="text-align: center">Chat History</h5>
+    <!--    --><?php
+    //    if ($chat_history_result->num_rows > 0) {
+    //        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
+    //        while ($row = $chat_history_result->fetch_assoc()) {
+    //            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
+    //        }
+    //        echo "</table>";
+    //    } else {
+    //        echo "<p>No chat history found.</p>";
+    //    }
+    //    ?>
     <hr>
 
-    <h5>Logged Hours</h5>
+    <h5 style="text-align: center">Logged Hours</h5>
     <?php
     if ($logged_hours_result->num_rows > 0) {
         echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours</th><th>Date Logged</th></tr>";
         while ($row = $logged_hours_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["ticket_id"] . "</td><td>" . $row["hours"] . "</td><td>" . $row["date_logged"] . "</td></tr>";
+            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["logged_hours"] . "</td><td>" . $row["date"] . "</td></tr>";
         }
         echo "</table>";
     } else {

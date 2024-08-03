@@ -26,12 +26,13 @@ $employee="employee";
 $currentHours = 99999999999999999999999999999999999;
 $ssql="SELECT * FROM users WHERE usertype='".$employee."'";
 $fetch_employee=mysqli_query($data,$ssql);
+/*
 while($result = mysqli_fetch_array($fetch_employee)){
     if($result['hours'] < $currentHours){
         $employee=$result['username'];
         $currentHours=$result['hours'];
     }
-}
+}*/
 
 $date=date("Y-m-d");
 $status = "open";
@@ -42,7 +43,7 @@ if(!$stmt -> prepare($sql)){
     die("SQL error: .$mysqli->error");
 }
 
-$stmt->bind_param("sssdss", $_POST["type"], $_POST["description"], $_SESSION["username"], $date, $status, $employee);
+$stmt->bind_param("ssssss", $_POST["type"], $_POST["description"], $_SESSION["username"], $date, $status, $employee);
 
 if($stmt->execute()){
     header("Location: userhome.php");

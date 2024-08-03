@@ -39,6 +39,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION["username"]=$username;
         header("location:adminhome.php");
     }
+    elseif($row["usertype"]=="employee")
+    {
+        $_SESSION["username"]=$username;
+        header("location:employeeHome.php");
+    }
     else
     {
         echo "username or password is incorrect";

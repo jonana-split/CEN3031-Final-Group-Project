@@ -108,8 +108,6 @@ if(!isset($_SESSION["username"]))
     </div>
 
     <br>
-
-    <p style="text-align: center">Already have an account? <a href="register.php">Login here.</a></p>
 </form>
 
 <br>

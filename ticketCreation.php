@@ -45,7 +45,7 @@ if(!isset($_SESSION["username"]))
 
         <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="user_viewTickets.php" style="color: aliceblue; ">View Past Tickets</a></li>
+        <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
 
