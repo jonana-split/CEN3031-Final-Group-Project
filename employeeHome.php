@@ -84,6 +84,8 @@ $sql="SELECT * FROM tickets WHERE employeeid='".$username."'";
         <h4>Input Hours</h4>
         <form class="white" action="logHours.php" method="POST">
                 <input type="text" name="loggedHours" /><br><br>
+                <label>Ticket ID</label>
+                <br>
                 <select name="ticketLog">
                     <?php
                     $fetch_tickets=mysqli_query($data,$sql);
@@ -102,6 +104,8 @@ $sql="SELECT * FROM tickets WHERE employeeid='".$username."'";
         <h4>Input Hours</h4>
         <form class="white" action="logEstimate.php" method="POST">
             <input type="text" name="estimateHours" /><br><br>
+            <label>Ticket ID</label>
+            <br>
             <select name="ticketEstimate">
                 <?php
                 $fetch_tickets=mysqli_query($data,$sql);
