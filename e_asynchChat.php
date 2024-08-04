@@ -42,17 +42,20 @@ $result_chats = $data->query($sql_chats);
     <title>Asynchronous Chat</title>
 </head>
 
-
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="userhome.php">iTicket</a>
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="employeeHome.php">iTicket</a>
 </div>
 
-<nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #3f7778; color: #f0f8ff">
+<nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="employeeHome.php" style="color: aliceblue;">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php" style="color: aliceblue;">Logout</a></li>
+        <li class="nav-item" ><a class="nav-link" href="employeeHome.php" style="color: aliceblue; ">Home</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
+
     </ul>
 </nav>
 
@@ -77,7 +80,7 @@ $result_chats = $data->query($sql_chats);
             <label style="display: inline-block; width: 100px; text-align: right;">Description</label>
             <input type="text" name="body">
             <div class="center">
-                <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0">
+                <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
             </div>
         </form>
     </section>

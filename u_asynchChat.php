@@ -42,7 +42,6 @@ $result_chats = $data->query($sql_chats);
     <title>Asynchronous Chat</title>
 </head>
 
-
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
@@ -57,7 +56,7 @@ $result_chats = $data->query($sql_chats);
 
         <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>
 </nav>
@@ -75,17 +74,23 @@ $result_chats = $data->query($sql_chats);
         <h4 class="center">Chat with:<b> <?php echo $employeeid; ?></b></h4>
         <p class="center">Regarding ticket ID: <b> <?php echo $ticket_id; ?> </b></p>
 
+        <br>
+
         <form class="white" action="u_addChat.php?employeeid=<?php echo $employeeid; ?>&ticket_id=<?php echo $ticket_id; ?>" method="POST">
             <label style="display: inline-block; width: 100px; text-align: right;">Subject</label>
             <input type="text" name="subject">
             <br><br>
             <label style="display: inline-block; width: 100px; text-align: right;">Description</label>
-            <input type="text" name="body">
+            <textarea type="text" name="body"></textarea>
+            <br>
+            <br>
             <div class="center">
-                <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0">
+                <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
             </div>
         </form>
     </section>
+    <br>
+    <hr style="width: 50%; margin: auto; background-color: #3f7778">
     <br>
     <h4>Chat History:</h4>
     <?php

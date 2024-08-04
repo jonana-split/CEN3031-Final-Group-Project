@@ -40,8 +40,20 @@ $chat_history_result = $data->query($chat_history_query);
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <title>iTicket</title>
+    <title>User History</title>
+
+    <style>
+        table, th, td, tr{
+            border: #3f7778 solid 1px;
+        }
+
+        th{
+            background-color: #acd8da;
+        }
+    </style>
+
 </head>
+
 
 <body style="font-family: K2D; background-color: #e0f2f3">
 
@@ -57,63 +69,89 @@ $chat_history_result = $data->query($chat_history_query);
 
         <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>
 </nav>
 
-<div class="section">
+
+<!--custom link based on ticket-->
+<!-- https://www.sitepoint.com/community/t/a-href-link-with-id/31080/2 -->
+
+<div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
+
     <h3 style="text-align: center; color: #3f7778">User Dashboard</h3>
+    <br>
+
     <h4>Welcome, <?php echo $_SESSION['username'] ?> !</h4>
-    <hr>
-    <h5>Active Tickets</h5>
+    <br>
+
+    <hr style="margin: auto; background-color: #3f7778">
+    <br>
+
+    <h5><b>Active Tickets</b></h5>
     <?php
     if ($active_tickets_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Date</th></tr>";
+        echo "<table class='table'>
+                  <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Messages</th>
+                  </tr>";
         while ($row = $active_tickets_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["date"] . "</td><td><button onclick=\"location.href='u_asynchChat.php?id=".$row['id']."&employeeid=".$row['employeeid']."'\">Chat</button></td></tr>";
-
+            echo "<tr>
+                    <td>" . $row["id"] . "</td>
+                    <td>" . $row["type"] . "</td>
+                    <td>" . $row["description"] . "</td>
+                    <td>" . $row["status"] . "</td>
+                    <td>" . $row["date"] . "</td>
+                    <td><button onclick=\"location.href='u_asynchChat.php?id=".$row['id']."&employeeid=".$row['employeeid']."'\">Chat</button></td>
+                </tr>";
         }
         echo "</table>";
     } else {
         echo "<p>No active tickets found.</p>";
     }
     ?>
-    <hr>
+    <br>
+    <hr style="margin: auto; background-color: #3f7778">
+    <br>
 
-    <h5>Ticket History</h5>
+    <h5><b>Ticket History</b></h5>
+    <br>
+
     <?php
     if ($ticket_history_result->num_rows > 0) {
         echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Date</th></tr>";
         while ($row = $ticket_history_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["date"] . "</td></tr>";
+            echo "<tr>
+                    <td>" . $row["id"] . "</td>
+                    <td>" . $row["type"] . "</td>
+                    <td>" . $row["description"] . "</td>
+                    <td>" . $row["status"] . "</td>
+                    <td>" . $row["date"] . "</td>
+                    </tr>";
         }
         echo "</table>";
     } else {
         echo "<p>No ticket history found.</p>";
     }
     ?>
-    <hr>
+    <br>
+    <hr style="margin: auto; background-color: #3f7778">
+    <br>
 
-    <h5>Chat History</h5>
-
-    <?php
-
-
-
-    /*if ($chat_history_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
-        while ($row = $chat_history_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
-        }
-        echo "</table>";
-    } else {
-        echo "<p>No chat history found.</p>";
-    }
-    */
-    ?>
 </div>
 
+<footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">
+
+    <p>&copy Debug Divas 2024</p>
+    <p>CEN3031 Final Project</p>
+
+</footer>
 </body>
 
 </html>

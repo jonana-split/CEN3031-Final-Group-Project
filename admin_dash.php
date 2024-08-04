@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     }
 }
 // Fetch all tickets
-$sql_tickets = "SELECT tickets.id, tickets.type, tickets.description, tickets.user, tickets.date, tickets.status 
+$sql_tickets = "SELECT tickets.id, tickets.type, tickets.employeeid, tickets.description, tickets.user, tickets.date, tickets.status 
         FROM tickets";
 $result_tickets = $data->query($sql_tickets);
 
@@ -63,17 +63,14 @@ $sql_categories = "SELECT type FROM tickets";
 $result_categories = $data->query($sql_categories);
 ?>
 
-    <!DOCTYPE html>
-    <html>
+<!DOCTYPE html>
+<html>
     <head>
         <title>Admin Dashboard - View Tickets</title>
         <style>
             table {
                 width: 100%;
                 border-collapse: collapse;
-            }
-            table, th, td {
-                border: 1px solid black;
             }
             th, td {
                 padding: 15px;
@@ -84,6 +81,12 @@ $result_categories = $data->query($sql_categories);
             }
             .stats div {
                 margin: 5px 0;
+            }
+            table, th, td, tr{
+                border: #3f7778 solid 1px;
+            }
+            th{
+                background-color: #acd8da;
             }
         </style>
 
@@ -104,52 +107,44 @@ $result_categories = $data->query($sql_categories);
         <ul class="navbar-nav">
             <li class="nav-item" ><a class="nav-link" href="adminhome.php" style="color: aliceblue; ">Home</a></li>
 
-            <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
-
             <li class="nav-item" ><a class="nav-link" href="adminCreate.php" style="color: aliceblue; ">Register Users</a></li>
 
             <li class="nav-item" ><a class="nav-link" href="admin_dash.php" style="color: aliceblue; ">View Tickets</a></li>
 
-            <!--    TOOK THIS FROM CODE I WROTE IN A PREVIOUS PROJECT, have to edit it. JUST PROOF OF CONCEPT HERE -->
-            <?php if (isset($_SESSION['username'])): ?>
-                <div class="dropdown">
-                    <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php echo $_SESSION['username'] ?>'s Account
-                    </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "user_viewTickets.php" ?>">Dashboard</a></li>
-                        <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "logout.php" ?>">LogOut</a></li>
-                    </ul>
-                </div>
-            <?php else: ?>
-                <li class="nav-item" ><a class="nav-link rounded" href="<?php echo "login.php" ?>" style = "color: #174142; border: 2px solid #3f7778;  display: inline-block; background-color: #f0f8ff; padding: 5px"> Login</a></li>
-            <?php endif; ?>
+            <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
         </ul>
     </nav>
 
+    <div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
+
     <h1>Admin Dashboard</h1>
     <div class="stats">
-        <div>Total New Tickets: <?php echo $total_new; ?></div>
-        <div>Total In-Process Tickets: <?php echo $total_in_process; ?></div>
-        <div>Total On-Hold Tickets: <?php echo $total_on_hold; ?></div>
-        <div>Total Tickets Resolved: <?php echo $total_resolved; ?></div>
+        <div><b>Total New Tickets:</b> <?php echo $total_new; ?></div>
+        <div><b>Total In-Process Tickets:</b> <?php echo $total_in_process; ?></div>
+        <div><b>Total On-Hold Tickets:</b> <?php echo $total_on_hold; ?></div>
+        <div><b>Total Tickets Resolved:</b> <?php echo $total_resolved; ?></div>
     </div>
 
-    <br>
+        <br>
+        <hr style="margin: auto; background-color: #3f7778">
+
+        <br>
     <h3 style="text-align: center; color: #3f7778">Delete User Account</h3>
     <form action="" method="POST" novalidate>
         <div class="input-group">
-            <label style="padding: 5px; margin: 5px;text-align: left;">User ID or Username</label>
-            <input style="padding: 5px; margin: 5px; width: 100%" type="text" id="user_id" name="user_id" required>
+            <label style="padding: 5px; margin: 5px;">User ID or Username</label>
+            <input placeholder="Input site user's ID or username" style="padding: 5px; margin: 5px; width: 100%" type="text" id="user_id" name="user_id" required>
         </div>
 
         <div class="input-group justify-content-center">
             <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="delete_user" class="btn btn-danger">Delete User</button>
         </div>
     </form>
+<br>
+        <hr style="margin: auto; background-color: #3f7778">
 
-    <br>
+        <br>
     <div class="ticket-management">
         <h2>Manage Tickets</h2>
         <?php
@@ -160,10 +155,10 @@ $result_categories = $data->query($sql_categories);
                     <th>Category</th>
                     <th>Description</th>
                     <th>User</th>
+                    <th>Assigned Employee</th>
                     <th>Status</th>
                     <th>Due Date</th>
                     <th>Change Status & Due Date</th>
-                    <th>Action</th>
                 </tr>";
             // Output data of each row
             while ($row = $result_tickets->fetch_assoc()) {
@@ -172,12 +167,13 @@ $result_categories = $data->query($sql_categories);
                     <td>" . $row["type"] . "</td>
                     <td>" . $row["description"] . "</td>
                     <td>" . $row["user"] . "</td>
+                    <td>" . $row["employeeid"] . "</td>
                     <td>" . $row["status"] . "</td>
                     <td>" . $row["date"] . "</td>
                     <td>
                             <form method='POST' action=''>
                                 <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
-                                <input type='text' name='employee'>
+                                <input type='text' placeholder='Input employee username' name='employee'>
                                 <select name='status'>
                                     <option value='open'" . ($row["status"] === 'open' ? ' selected' : '') . ">Open</option>
                                     <option value='in-process'" . ($row["status"] === 'in-process' ? ' selected' : '') . ">In-Process</option>
@@ -195,8 +191,21 @@ $result_categories = $data->query($sql_categories);
             echo "No tickets found";
         }
         ?>
+
+    </div>
+    </div>
+    <br>
+
+    <footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">
+
+        <p>&copy Debug Divas 2024</p>
+        <p>CEN3031 Final Project</p>
+
+    </footer>
+
     </body>
     </html>
+
 
 <?php
 // Close connection

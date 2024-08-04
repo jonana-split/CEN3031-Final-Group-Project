@@ -102,34 +102,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             max-width: 900px;
             margin: 0 auto;
         }
+         table, th, td, tr{
+             border: #3f7778 solid 1px;
+         }
+
+        th{
+            background-color: #acd8da;
+        }
     </style>
 </head>
 
 <body style="font-family: K2D; background-color: #e0f2f3">
 
-<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px; background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employeeHome.php">iTicket</a>
+<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="employeeHome.php">iTicket</a>
 </div>
 
-<nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #3f7778; color: #f0f8ff">
+<nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="employeeHome.php" style="color: aliceblue;">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php" style="color: aliceblue;">Logout</a></li>
+        <li class="nav-item" ><a class="nav-link" href="employeeHome.php" style="color: aliceblue; ">Home</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
+
     </ul>
 </nav>
 
 <div class="section">
     <h3 style="text-align: center; color: #3f7778">Employee Dashboard</h3>
-    <h4 style="text-align: center">Welcome, <?php echo $user['username']; ?>!</h4>
-    <hr>
+    <br>
+    <h4 style="text-align: center">Welcome, <b><?php echo $user['username']; ?></b>!</h4>
+    <br>
+    <hr style="margin: auto; background-color: #3f7778">
 
-    <h5 style="text-align: center"><a href="calendar.php">Availability/Scheduling</a></h5>
-    <hr>
+    <br>
+    <h5 style="text-align: center"><a href="calendar.php">View Calendar</a></h5>
+    <br>
 
-    <h5 style="text-align: center">Assigned Tickets</h5>
+    <hr style="margin: auto; background-color: #3f7778">
+
+    <br>
+    <h5 style="text-align: center"><b>Assigned Tickets</b></h5>
     <?php
     if ($assigned_tickets_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th><th>Messages</th></tr>";
         while ($row = $assigned_tickets_result->fetch_assoc()) {
             echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td>
             <td>
@@ -158,6 +175,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
                     <button type='submit' name='estimate_time' class='btn btn-info'>Estimate Time</button>
                 </form>
             </td>
+            <td><button onclick=\"location.href='e_asynchChat.php?id=".$row['id']."&user=".$row['user']."'\">Chat</button></td>
+
             </tr>";
         }
         echo "</table>";
@@ -165,26 +184,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
         echo "<p>No assigned tickets found.</p>";
     }
     ?>
-    <hr>
+    <hr style="margin: auto; background-color: #3f7778">
 
-    <h5 style="text-align: center">Chat History</h5>
-    <!--    --><?php
-    //    if ($chat_history_result->num_rows > 0) {
-    //        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
-    //        while ($row = $chat_history_result->fetch_assoc()) {
-    //            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
-    //        }
-    //        echo "</table>";
-    //    } else {
-    //        echo "<p>No chat history found.</p>";
-    //    }
-    //    ?>
-    <hr>
-
-    <h5 style="text-align: center">Logged Hours</h5>
+    <br>
+    <h5 style="text-align: center"><b>Logged Hours</b></h5>
     <?php
     if ($logged_hours_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours</th><th>Date Logged</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours Logged</th><th>Due Date</th></tr>";
         while ($row = $logged_hours_result->fetch_assoc()) {
             echo "<tr><td>" . $row["id"] . "</td><td>" . $row["logged_hours"] . "</td><td>" . $row["date"] . "</td></tr>";
         }
@@ -193,15 +199,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
         echo "<p>No logged hours found.</p>";
     }
     ?>
-</div>
-
-
-<!-- <hr style="width: 75%; margin: auto; background-color: #3f7778">
--->
-
-<div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
-    <a href="logout.php"> Logout :D </a>
-
 </div>
 
 <br>
@@ -215,3 +212,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 </body>
 
 </html>
+
+

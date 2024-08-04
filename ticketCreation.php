@@ -33,6 +33,7 @@ if(!isset($_SESSION["username"]))
     </style>
 </head>
 
+
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
@@ -47,13 +48,20 @@ if(!isset($_SESSION["username"]))
 
         <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>
 </nav>
 
+<div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
+
 <section class="container grey-text">
-    <h4 class="center">Add a Ticket</h4>
+
+    <br>
+
+    <h3 class="center">Create a Ticket</h3>
+    <p>Please input a ticket type and a description of your issue.</p>
+
     <form class="white" action="addTicket.php" method="POST">
         <label for="type">Ticket Type
         <input list="types" name ="type" /></label>
@@ -66,15 +74,25 @@ if(!isset($_SESSION["username"]))
         </datalist>
         <br><br>
         <label>Description</label>
-        <input type="text" name="description">
+        <textarea type="text" name="description"></textarea>
+        <br>
+        <br>
         <div class="center">
-            <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0">
+            <input type="submit" name="submit" value="Submit" class="btn z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
         </div>
     </form>
 </section>
 
-<footer class="section">
-    <div class="center grey-text"></div>
+    <br>
+
+</div>
+
+<footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">
+
+    <p>&copy Debug Divas 2024</p>
+    <p>CEN3031 Final Project</p>
+
 </footer>
 </body>
+
 </html>

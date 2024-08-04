@@ -102,13 +102,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             max-width: 900px;
             margin: 0 auto;
         }
+
+
+
     </style>
 </head>
 
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px; background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employee_dashboard.php">iTicket</a>
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employee_dash.php">iTicket</a>
 </div>
 
 <nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #3f7778; color: #f0f8ff">
