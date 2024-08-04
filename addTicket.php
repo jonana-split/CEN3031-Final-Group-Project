@@ -15,11 +15,11 @@ if(empty($_POST["type"])){
     die("Ticket Type required");
 }
 
-if(empty($POST["description"])){
+if(empty($_POST["description"])){
     die("Description required");
 }
 
-$mysqli = require  _DIR . "/database.php";
+$mysqli = require  __DIR__ . "/database.php";
 
 $data=mysqli_connect($host,$user,$password,$db);
 $employee="employee";
