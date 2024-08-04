@@ -47,6 +47,8 @@
 
         <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
 
+        <li class="nav-item" ><a class="nav-link" href="e_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
+
         <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>

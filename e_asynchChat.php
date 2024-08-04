@@ -47,12 +47,13 @@ $result_chats = $data->query($sql_chats);
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
     <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="employeeHome.php">iTicket</a>
 </div>
-
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="employeeHome.php" style="color: aliceblue; ">Home</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="e_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 

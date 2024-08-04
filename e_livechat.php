@@ -20,7 +20,6 @@ $data = mysqli_connect($host, $user, $password, $db);
 //test when id=1
 //MAKE SURE TO CHANGE THIS TO 'id'
 
-//CITE:
 //https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
 
 $sql_chats = "SELECT livechats.id, livechats.to_user, livechats.from_user, livechats.time, livechats.body, livechats.subject FROM livechats ORDER BY livechats.id DESC";
@@ -40,33 +39,31 @@ $result_chats = $data->query($sql_chats);
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <title>Live Chat</title>
+    <title>Asynchronous Chat</title>
 </head>
 
 <body style="font-family: K2D; background-color: #e0f2f3">
 
 <div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="userhome.php">iTicket</a>
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="employeeHome.php">iTicket</a>
 </div>
-
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item" ><a class="nav-link" href="userhome.php" style="color: aliceblue; ">Home</a></li>
+        <li class="nav-item" ><a class="nav-link" href="employeeHome.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
+        <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
-        <li class="nav-item" ><a class="nav-link" href="u_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
+        <li class="nav-item" ><a class="nav-link" href="e_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>
 </nav>
 
+
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
 
     <!--
-    CITATIONS:
     https://stackoverflow.com/questions/26924762/assigning-variables-to-sql-query-result
     https://www.w3schools.com/php/func_mysqli_fetch_assoc.asp
     https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html
@@ -74,25 +71,19 @@ $result_chats = $data->query($sql_chats);
 
 
     <section class="container grey-text">
-        <h4 class="center">Live Chat</b></h4>
+        <h4 class="center">Live Chat</h4>
 
-        <br>
-
-        <form class="white" action="u_addLiveChat.php?employeeid=<?php echo $user; ?>" method="POST">
+        <form class="white" action="e_addLiveChat.php?user=<?php echo $user; ?>" method="POST">
             <label style="display: inline-block; width: 100px; text-align: right;">Subject</label>
             <input type="text" name="subject">
             <br><br>
             <label style="display: inline-block; width: 100px; text-align: right;">Description</label>
-            <textarea type="text" name="body"></textarea>
-            <br>
-            <br>
+            <input type="text" name="body">
             <div class="center">
                 <input type="submit" name="submit" value="Submit" class="btn brand z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
             </div>
         </form>
     </section>
-    <br>
-    <hr style="width: 50%; margin: auto; background-color: #3f7778">
     <br>
     <h4>Chat History:</h4>
     <?php

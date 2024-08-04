@@ -20,7 +20,7 @@ $data = mysqli_connect($host, $user, $password, $db);
 $ticket_id = $_GET["id"];
 $employeeid = $_GET["employeeid"];
 
-//https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
+//CITE: https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
 
 $sql_chats = "SELECT chats.id, chats.to_user, chats.from_user, chats.time, chats.body, chats.subject FROM chats WHERE chats.ticket_id='$ticket_id' ORDER BY chats.id DESC";
 
@@ -55,6 +55,7 @@ $result_chats = $data->query($sql_chats);
         <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
+        <li class="nav-item" ><a class="nav-link" href="u_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
@@ -64,6 +65,7 @@ $result_chats = $data->query($sql_chats);
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
 
     <!--
+    CITATIONS:
     https://stackoverflow.com/questions/26924762/assigning-variables-to-sql-query-result
     https://www.w3schools.com/php/func_mysqli_fetch_assoc.asp
     https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html

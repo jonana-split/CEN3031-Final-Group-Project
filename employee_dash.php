@@ -114,10 +114,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employee_dash.php">iTicket</a>
 </div>
 
-<nav class="navbar navbar-expand-sm justify-content-center" style="background-color: #3f7778; color: #f0f8ff">
+<nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="employee_dashboard.php" style="color: aliceblue;">Home</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php" style="color: aliceblue;">Logout</a></li>
+        <li class="nav-item" ><a class="nav-link" href="employeeHome.php" style="color: aliceblue; ">Home</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="calendar.php" style="color: aliceblue; ">View Calendar</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="e_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
+
     </ul>
 </nav>
 
