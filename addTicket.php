@@ -15,11 +15,24 @@ if(empty($_POST["type"])){
     die("Ticket Type required");
 }
 
-if(empty($_POST["description"])){
+if(empty($POST["description"])){
     die("Description required");
 }
 
-$mysqli = require  __DIR__ . "/database.php";
+$mysqli = require  _DIR . "/database.php";
+
+$data=mysqli_connect($host,$user,$password,$db);
+$employee="employee";
+$currentHours = 99999999999999999999999999999999999;
+$ssql="SELECT * FROM users WHERE usertype='".$employee."'";
+$fetch_employee=mysqli_query($data,$ssql);
+/*
+while($result = mysqli_fetch_array($fetch_employee)){
+    if($result['hours'] < $currentHours){
+        $employee=$result['username'];
+        $currentHours=$result['hours'];
+    }
+}*/
 
 $data=mysqli_connect($host,$user,$password,$db);
 $employee="employee";

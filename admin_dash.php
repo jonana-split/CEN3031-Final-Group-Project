@@ -158,9 +158,9 @@ if ($result_tickets->num_rows > 0) {
                     <th>Category</th>
                     <th>Description</th>
                     <th>User</th>
-                    <th>Created At</th>
                     <th>Status</th>
-                    <th>Change Status</th>
+                    <th>Due Date</th>
+                    <th>Change Status & Due Date</th>
                     <th>Action</th>
                 </tr>";
     // Output data of each row
@@ -170,8 +170,8 @@ if ($result_tickets->num_rows > 0) {
                     <td>" . $row["type"] . "</td>
                     <td>" . $row["description"] . "</td>
                     <td>" . $row["user"] . "</td>
-                    <td>" . $row["date"] . "</td>
                     <td>" . $row["status"] . "</td>
+                    <td>" . $row["date"] . "</td>
                     <td>
                             <form method='POST' action=''>
                                 <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
@@ -181,6 +181,7 @@ if ($result_tickets->num_rows > 0) {
                                     <option value='on-hold'" . ($row["status"] === 'on-hold' ? ' selected' : '') . ">On-Hold</option>
                                     <option value='closed'" . ($row["status"] === 'closed' ? ' selected' : '') . ">Resolved</option>
                                 </select>
+                                <input type='date' name='due_date' value='" . $row["date"] . "'>
                                 <button type='submit' name='update_ticket'>Update</button>
                             </form>
                         </td>
