@@ -23,12 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_user'])) {
     }
 }
 
+
 // Handle ticket updates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $status = $data->real_escape_string($_POST['status']);
     $resolved_at = $_POST['due_date'];
-    $sql = "UPDATE tickets SET status = '$status', date='$resolved_at' WHERE id = $ticket_id";
+    $employeename = $_POST['employee'];
+    $sql = "UPDATE tickets SET status = '$status', date='$resolved_at', employeeid='$employeename' WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Ticket updated successfully.";
     } else {
@@ -175,6 +177,7 @@ $result_categories = $data->query($sql_categories);
                     <td>
                             <form method='POST' action=''>
                                 <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
+                                <input type='text' name='employee'>
                                 <select name='status'>
                                     <option value='open'" . ($row["status"] === 'open' ? ' selected' : '') . ">Open</option>
                                     <option value='in-process'" . ($row["status"] === 'in-process' ? ' selected' : '') . ">In-Process</option>
