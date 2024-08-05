@@ -1,6 +1,28 @@
 #!/usr/local/bin/php
 <?php
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
+
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="user")
+{
+    header("location:userhome.php");
+}else if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
@@ -43,14 +65,14 @@ if(!isset($_SESSION["username"]))
 
 <div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
 
-        <h3 style="text-align: center; color: #3f7778">Administrator Home</h3>
-        <br>
+    <h3 style="text-align: center; color: #3f7778">Administrator Home</h3>
+    <br>
 
-        <h4>Welcome, <?php echo $_SESSION['username'] ?> !</h4>
-        <br>
+    <h4>Welcome, <?php echo $_SESSION['username'] ?> !</h4>
+    <br>
 
-        <hr style="width: 50%; margin: auto; background-color: #3f7778">
-        <br>
+    <hr style="width: 50%; margin: auto; background-color: #3f7778">
+    <br>
 
 
     <div class="row" style="margin: 30px">

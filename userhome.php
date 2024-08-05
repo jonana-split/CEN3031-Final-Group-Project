@@ -5,7 +5,22 @@ $host = "127.0.0.1";
 $user = "root";
 $password = "";
 $db="login_it";
+
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
 
 if(!isset($_SESSION["username"]))
 {

@@ -5,6 +5,24 @@ $password = "";
 $db="login_it";
 
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="user")
+{
+    header("location:userhome.php");
+}else if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
+
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
@@ -63,8 +81,8 @@ $sql_categories = "SELECT type FROM tickets";
 $result_categories = $data->query($sql_categories);
 ?>
 
-<!DOCTYPE html>
-<html>
+    <!DOCTYPE html>
+    <html>
     <head>
         <title>Admin Dashboard - View Tickets</title>
         <style>
@@ -118,38 +136,38 @@ $result_categories = $data->query($sql_categories);
 
     <div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
 
-    <h1>Admin Dashboard</h1>
-    <div class="stats">
-        <div><b>Total New Tickets:</b> <?php echo $total_new; ?></div>
-        <div><b>Total In-Process Tickets:</b> <?php echo $total_in_process; ?></div>
-        <div><b>Total On-Hold Tickets:</b> <?php echo $total_on_hold; ?></div>
-        <div><b>Total Tickets Resolved:</b> <?php echo $total_resolved; ?></div>
-    </div>
+        <h1>Admin Dashboard</h1>
+        <div class="stats">
+            <div><b>Total New Tickets:</b> <?php echo $total_new; ?></div>
+            <div><b>Total In-Process Tickets:</b> <?php echo $total_in_process; ?></div>
+            <div><b>Total On-Hold Tickets:</b> <?php echo $total_on_hold; ?></div>
+            <div><b>Total Tickets Resolved:</b> <?php echo $total_resolved; ?></div>
+        </div>
 
         <br>
         <hr style="margin: auto; background-color: #3f7778">
 
         <br>
-    <h3 style="text-align: center; color: #3f7778">Delete User Account</h3>
-    <form action="" method="POST" novalidate>
-        <div class="input-group">
-            <label style="padding: 5px; margin: 5px;">User ID or Username</label>
-            <input placeholder="Input site user's ID or username" style="padding: 5px; margin: 5px; width: 100%" type="text" id="user_id" name="user_id" required>
-        </div>
+        <h3 style="text-align: center; color: #3f7778">Delete User Account</h3>
+        <form action="" method="POST" novalidate>
+            <div class="input-group">
+                <label style="padding: 5px; margin: 5px;">User ID or Username</label>
+                <input placeholder="Input site user's ID or username" style="padding: 5px; margin: 5px; width: 100%" type="text" id="user_id" name="user_id" required>
+            </div>
 
-        <div class="input-group justify-content-center">
-            <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="delete_user" class="btn btn-danger">Delete User</button>
-        </div>
-    </form>
-<br>
+            <div class="input-group justify-content-center">
+                <button style="padding: 5px; margin: 5px; width: 40%;" type="submit" name="delete_user" class="btn btn-danger">Delete User</button>
+            </div>
+        </form>
+        <br>
         <hr style="margin: auto; background-color: #3f7778">
 
         <br>
-    <div class="ticket-management">
-        <h2>Manage Tickets</h2>
-        <?php
-        if ($result_tickets->num_rows > 0) {
-            echo "<table>
+        <div class="ticket-management">
+            <h2>Manage Tickets</h2>
+            <?php
+            if ($result_tickets->num_rows > 0) {
+                echo "<table>
                 <tr>
                     <th>ID</th>
                     <th>Category</th>
@@ -160,9 +178,9 @@ $result_categories = $data->query($sql_categories);
                     <th>Due Date</th>
                     <th>Change Status & Due Date</th>
                 </tr>";
-            // Output data of each row
-            while ($row = $result_tickets->fetch_assoc()) {
-                echo "<tr>
+                // Output data of each row
+                while ($row = $result_tickets->fetch_assoc()) {
+                    echo "<tr>
                     <td>" . $row["id"] . "</td>
                     <td>" . $row["type"] . "</td>
                     <td>" . $row["description"] . "</td>
@@ -185,14 +203,14 @@ $result_categories = $data->query($sql_categories);
                             </form>
                         </td>
                 </tr>";
+                }
+                echo "</table>";
+            } else {
+                echo "No tickets found";
             }
-            echo "</table>";
-        } else {
-            echo "No tickets found";
-        }
-        ?>
+            ?>
 
-    </div>
+        </div>
     </div>
     <br>
 

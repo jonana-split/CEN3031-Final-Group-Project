@@ -1,24 +1,24 @@
 <?php
-    $host = "127.0.0.1";
-    $user = "root";
-    $password = "";
-    $db="login_it";
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
 
-    session_start();
+session_start();
 
-    if(!isset($_SESSION["username"]))
-    {
-        header("location:login.php");
-    }
+if(!isset($_SESSION["username"]))
+{
+    header("location:login.php");
+}
 
-    define('__HEADER_FOOTER_PHP__', true);
+define('__HEADER_FOOTER_PHP__', true);
 
-    $data=mysqli_connect($host,$user,$password,$db);
+$data=mysqli_connect($host,$user,$password,$db);
 
-    $username = $_SESSION["username"];
+$username = $_SESSION["username"];
 
-    $sql="SELECT * FROM tickets WHERE employeeid='".$username."'";
-    $fetch_event=mysqli_query($data,$sql);
+$sql="SELECT * FROM tickets WHERE employeeid='".$username."'";
+$fetch_event=mysqli_query($data,$sql);
 ?>
 <html>
 <head>
@@ -54,12 +54,12 @@
     </ul>
 </nav>
 
-    <h1><center>Ticket Calendar</center></h1>
+<h1><center>Ticket Calendar</center></h1>
 <br>
-    <div class="container">
-        <div id="calendar"></div>
-    </div>
-    <br>
+<div class="container">
+    <div id="calendar"></div>
+</div>
+<br>
 
 
 <footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">

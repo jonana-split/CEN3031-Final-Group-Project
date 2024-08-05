@@ -56,33 +56,33 @@ if(!isset($_SESSION["username"]))
 
 <div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
 
-<section class="container grey-text">
+    <section class="container grey-text">
 
-    <br>
-
-    <h3 class="center">Create a Ticket</h3>
-    <p>Please input a ticket type and a description of your issue.</p>
-
-    <form class="white" action="addTicket.php" method="POST">
-        <label for="type">Ticket Type
-        <input list="types" name ="type" /></label>
-        <datalist id="types">
-            <option value="">Choose a Ticket Type</option>
-            <option value="Hardware">Hardware</option>
-            <option value="Software">Software</option>
-            <option value="Network">Network</option>
-            <option value="Other">Other</option>
-        </datalist>
-        <br><br>
-        <label>Description</label>
-        <textarea type="text" name="description"></textarea>
         <br>
-        <br>
-        <div class="center">
-            <input type="submit" name="submit" value="Submit" class="btn z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
-        </div>
-    </form>
-</section>
+
+        <h3 class="center">Create a Ticket</h3>
+        <p>Please input a ticket type and a description of your issue.</p>
+
+        <form class="white" action="addTicket.php" method="POST">
+            <label for="type">Ticket Type
+                <input list="types" name ="type" /></label>
+            <datalist id="types">
+                <option value="">Choose a Ticket Type</option>
+                <option value="Hardware">Hardware</option>
+                <option value="Software">Software</option>
+                <option value="Network">Network</option>
+                <option value="Other">Other</option>
+            </datalist>
+            <br><br>
+            <label>Description</label>
+            <textarea type="text" name="description"></textarea>
+            <br>
+            <br>
+            <div class="center">
+                <input type="submit" name="submit" value="Submit" class="btn z-depth-0 rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; ">
+            </div>
+        </form>
+    </section>
 
     <br>
 

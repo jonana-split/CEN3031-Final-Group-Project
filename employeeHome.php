@@ -1,6 +1,27 @@
 #!/usr/local/bin/php
 <?php
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
+
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="user")
+{
+    header("location:userhome.php");
+}
+
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"])) {
     header("location:login.php");
@@ -102,9 +123,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             max-width: 900px;
             margin: 0 auto;
         }
-         table, th, td, tr{
-             border: #3f7778 solid 1px;
-         }
+        table, th, td, tr{
+            border: #3f7778 solid 1px;
+        }
 
         th{
             background-color: #acd8da;
@@ -214,5 +235,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 </body>
 
 </html>
-
-
