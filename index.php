@@ -37,8 +37,6 @@ define('__HEADER_FOOTER_PHP__', true);
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
-
         <li class="nav-item" ><a class="nav-link" href="login.php" style="color: aliceblue; ">Login</a></li>
     </ul>
 </nav>
@@ -65,10 +63,6 @@ define('__HEADER_FOOTER_PHP__', true);
         <button onclick="location.href='register.php'" class="button rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; " >Register</button>
     </div>
 </div>
-
-
-   <!-- <hr style="width: 75%; margin: auto; background-color: #3f7778">
-   -->
 
 <br>
 

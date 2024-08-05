@@ -39,6 +39,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
         $_SESSION["username"]=$username;
         header("location:adminhome.php");
     }
+    elseif($row["usertype"]=="employee")
+    {
+        $_SESSION["username"]=$username;
+        header("location:employeeHome.php");
+    }
     else
     {
         echo "username or password is incorrect";
@@ -82,8 +87,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
-
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="login.php" style="color: aliceblue; ">Login</a></li>
     </ul>

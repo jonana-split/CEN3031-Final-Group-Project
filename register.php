@@ -35,8 +35,6 @@
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
-
         <li class="nav-item" ><a class="nav-link" href="login.php" style="color: aliceblue; ">Login</a></li>
 
     </ul>
@@ -46,6 +44,12 @@
 
 <br>
 <h3 style="text-align: center; color: #3f7778">Register</h3>
+<br>
+<p style="text-align: center; color: #3f7778; margin: 0"><b>Requirements:</b></p>
+<p style="text-align: center; color: #3f7778; margin: 0">1) Username and Email must be unique</p>
+<p style="text-align: center; color: #3f7778; margin: 0">2) Password is 8 or more characters long</p>
+<p style="text-align: center; color: #3f7778; margin: 0">3) Password contains letters and numbers</p>
+<br>
 <form class="" action="createAccount.php" method="POST" novalidate>
     <div class="input-group">
         <label style="padding: 5px; margin: 5px;text-align: left; ">Username</label>
@@ -75,7 +79,7 @@
 
     <br>
 
-    <p style="text-align: center">Already have an account? <a href="register.php">Login here.</a></p>
+    <p style="text-align: center">Already have an account? <a href="login.php">Login here.</a></p>
 </form>
 
 <br>
