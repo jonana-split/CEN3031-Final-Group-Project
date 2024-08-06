@@ -2,6 +2,7 @@
 
 <?php
 
+//CITE:
 //https://www.youtube.com/watch?v=5L9UhOnuos0
 
 //validate username
@@ -37,8 +38,10 @@ $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
 $mysqli = require __DIR__ . "/database.php";
 
+//user type is defaulted to user
 $usertype = "user";
 
+//insert new user to table
 $sql= "INSERT INTO users (username, email, password_hash, usertype) VALUES (?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();

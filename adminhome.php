@@ -30,6 +30,7 @@ if(!isset($_SESSION["username"]))
 }
 ?>
 
+<!-- Home page of administrators -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -75,6 +76,7 @@ if(!isset($_SESSION["username"]))
     <br>
 
 
+    <!-- Different options for admin actions -->
     <div class="row" style="margin: 30px">
         <div class="col-md justify-content-center text-center rounded" style="color: #174142; border: #5e979a solid 1px;margin: 10px; padding: 10px; background-color: #d2eeef">
             <br>

@@ -19,6 +19,7 @@ if(empty($_POST["ticketLog"])){
     die("The ticket you worked on is required");
 }
 
+//update the number of hours within the tickets table
 $mysqli = require  __DIR__ . "/database.php";
 $data=mysqli_connect($host,$user,$password,$db);
 

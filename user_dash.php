@@ -26,7 +26,7 @@ if(!isset($_SESSION["username"]))
 {
     header("location:login.php");
 }
-$data = mysqli_connect($host, $user_, $password, $db);
+$data = mysqli_connect($host, $user, $password, $db);
 
 $username = $_SESSION["username"];
 
@@ -91,7 +91,7 @@ $chat_history_result = $data->query($chat_history_query);
 </nav>
 
 
-<!--custom link based on ticket-->
+<!--Custom link based on ticket-->
 <!-- https://www.sitepoint.com/community/t/a-href-link-with-id/31080/2 -->
 
 <div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
@@ -105,6 +105,7 @@ $chat_history_result = $data->query($chat_history_query);
     <hr style="margin: auto; background-color: #3f7778">
     <br>
 
+    <!-- Table for tickets, populates based on database -->
     <h5><b>Active Tickets</b></h5>
     <?php
     if ($active_tickets_result->num_rows > 0) {

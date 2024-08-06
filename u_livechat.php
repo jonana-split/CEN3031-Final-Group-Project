@@ -93,6 +93,7 @@ $result_chats = $data->query($sql_chats);
 
         <br>
 
+        <!-- Live chat submission form, adds chat to database -->
         <form class="white" action="u_addLiveChat.php?employeeid=<?php echo $user; ?>" method="POST">
             <label style="display: inline-block; width: 100px; text-align: right;">Subject</label>
             <input type="text" name="subject">
@@ -109,6 +110,8 @@ $result_chats = $data->query($sql_chats);
     <br>
     <hr style="width: 50%; margin: auto; background-color: #3f7778">
     <br>
+
+    <!-- Fetch chat history from database, original code made from mixture of previous code in this repository -->
     <h4>Chat History:</h4>
     <?php
     if ($result_chats->num_rows > 0) {

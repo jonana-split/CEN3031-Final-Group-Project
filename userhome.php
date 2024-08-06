@@ -82,6 +82,7 @@ $ticket_history_result = $data->query($ticket_history_query);
     <h4>Welcome to iTicket:</h4>
     <h5>The solution to all of your IT ticketing needs!</h5>
 
+    <!-- Links to different user features -->
     <div class="row" style="margin: 30px">
         <div class="col-md justify-content-center text-center rounded" style="color: #174142; border: #5e979a solid 1px;margin: 10px; padding: 10px; background-color: #d2eeef">
             <br>

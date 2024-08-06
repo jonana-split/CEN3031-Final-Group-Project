@@ -164,6 +164,10 @@ $result_categories = $data->query($sql_categories);
 
         <br>
         <div class="ticket-management">
+
+            <!-- Display all tickets for all employees in a table
+                 Admins can edit ticket due date, assigned employee, and status-->
+
             <h2>Manage Tickets</h2>
             <?php
             if ($result_tickets->num_rows > 0) {

@@ -2,6 +2,8 @@
 
 <?php
 
+//connect to database
+
 $host = "127.0.0.1";
 $dbname = "login_it";
 $username = "root";

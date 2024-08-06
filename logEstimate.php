@@ -19,6 +19,7 @@ if(empty($_POST["ticketEstimate"])){
     die("The ticket you worked on is required");
 }
 
+//update the time estimate within the tickets database
 $mysqli = require  __DIR__ . "/database.php";
 $data=mysqli_connect($host,$user,$password,$db);
 

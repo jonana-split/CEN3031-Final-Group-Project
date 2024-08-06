@@ -21,7 +21,10 @@ $data=mysqli_connect($host,$user,$password,$db);
 
 $to_user= $_GET["user"];
 
+//current time and date
 $time=date("Y-m-d h:s:m");
+
+//insert the live chat data to the livechats table
 $sql= "INSERT INTO livechats (to_user, from_user, time, body, subject) VALUES (?,?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();

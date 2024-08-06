@@ -1,3 +1,4 @@
+<!-- UNUSED FILE -->
 #!/usr/local/bin/php
 <?php
 $host = "127.0.0.1";

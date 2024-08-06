@@ -21,7 +21,10 @@ $data=mysqli_connect($host,$user,$password,$db);
 
 $to_user= $_GET["employeeid"];
 
+//get the current time and date
 $time=date("Y-m-d h:s:m");
+
+//insert a live chat dataset into database
 $sql= "INSERT INTO livechats (to_user, from_user, time, body, subject) VALUES (?,?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();
@@ -31,6 +34,7 @@ if(!$stmt -> prepare($sql)){
 
 $stmt->bind_param("sssss", $to_user, $_SESSION["username"], $time, $_POST["body"], $_POST["subject"]);
 
+//when finished go back to livechat page
 if($stmt->execute()){
     header("Location: u_livechat.php?employeeid=".$to_user);
     exit;

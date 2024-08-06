@@ -60,6 +60,7 @@ if(!isset($_SESSION["username"]))
 
         <br>
 
+        <!-- Form to input ticket information and save to database -->
         <h3 class="center">Create a Ticket</h3>
         <p>Please input a ticket type and a description of your issue.</p>
 

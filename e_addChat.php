@@ -26,6 +26,8 @@ $ssql="SELECT * FROM tickets WHERE tickets.user='".$to_user."'";
 $fetch_employee=mysqli_query($data,$ssql);
 
 $time=date("Y-m-d h:s:m");
+
+//insert chat data into chats table
 $sql= "INSERT INTO chats (to_user, from_user, time, ticket_id, body, subject) VALUES (?,?,?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();

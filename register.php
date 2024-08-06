@@ -40,7 +40,8 @@
     </ul>
 </nav>
 
-<!-- CITE and change up the styling here and above a little: https://www.youtube.com/watch?v=ShbHwaiyOps -->
+<!-- CITE and change up the styling here and above a little:
+https://www.youtube.com/watch?v=ShbHwaiyOps -->
 
 <br>
 <h3 style="text-align: center; color: #3f7778">Register</h3>
@@ -50,6 +51,8 @@
 <p style="text-align: center; color: #3f7778; margin: 0">2) Password is 8 or more characters long</p>
 <p style="text-align: center; color: #3f7778; margin: 0">3) Password contains letters and numbers</p>
 <br>
+
+<!-- Form that saves user information, verifies it via createAccount, and adds new account to database -->
 <form class="" action="createAccount.php" method="POST" novalidate>
     <div class="input-group">
         <label style="padding: 5px; margin: 5px;text-align: left; ">Username</label>

@@ -97,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 }
 
 ?>
-
+<!-- The home page where employees will automatically be directed to -->
 <!DOCTYPE html>
 <html lang="en">
 

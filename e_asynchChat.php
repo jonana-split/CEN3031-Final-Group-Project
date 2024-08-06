@@ -30,13 +30,11 @@ if(!isset($_SESSION["username"]))
 
 $data = mysqli_connect($host, $user, $password, $db);
 
-//test when id=1
-//MAKE SURE TO CHANGE THIS TO 'id'
-
+//fetch ticket and user id to verify what ticket and user employees are talking to
 $ticket_id = $_GET["id"];
 $user = $_GET["user"];
 
-//https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
+//CITE: https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
 
 $sql_chats = "SELECT chats.id, chats.to_user, chats.from_user, chats.time, chats.body, chats.subject FROM chats WHERE chats.ticket_id='$ticket_id' ORDER BY chats.id DESC";
 
@@ -80,6 +78,7 @@ $result_chats = $data->query($sql_chats);
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
 
     <!--
+    CITATION:
     https://stackoverflow.com/questions/26924762/assigning-variables-to-sql-query-result
     https://www.w3schools.com/php/func_mysqli_fetch_assoc.asp
     https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html
@@ -90,6 +89,7 @@ $result_chats = $data->query($sql_chats);
         <h4 class="center">Chat with:<b> <?php echo $user; ?></b></h4>
         <p class="center">Regarding ticket ID: <b> <?php echo $ticket_id; ?> </b></p>
 
+        <!-- allow employee to message user back -->
         <form class="white" action="e_addChat.php?user=<?php echo $user; ?>&ticket_id=<?php echo $ticket_id; ?>" method="POST">
             <label style="display: inline-block; width: 100px; text-align: right;">Subject</label>
             <input type="text" name="subject">
@@ -102,6 +102,7 @@ $result_chats = $data->query($sql_chats);
         </form>
     </section>
     <br>
+    <!-- Display previous chats between this user and employee regarding this ticket -->
     <h4>Chat History:</h4>
     <?php
     if ($result_chats->num_rows > 0) {

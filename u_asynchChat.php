@@ -86,7 +86,6 @@ $result_chats = $data->query($sql_chats);
     https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html
     -->
 
-
     <section class="container grey-text">
         <h4 class="center">Chat with:<b> <?php echo $employeeid; ?></b></h4>
         <p class="center">Regarding ticket ID: <b> <?php echo $ticket_id; ?> </b></p>
@@ -109,6 +108,8 @@ $result_chats = $data->query($sql_chats);
     <br>
     <hr style="width: 50%; margin: auto; background-color: #3f7778">
     <br>
+
+    <!-- Fetch chat history from database, original code made from mixture of previous code in this repository -->
     <h4>Chat History:</h4>
     <?php
     if ($result_chats->num_rows > 0) {

@@ -1,3 +1,5 @@
+<!-- UNUSED FILE -->
+
 #!/usr/local/bin/php
 <?php
 session_start();

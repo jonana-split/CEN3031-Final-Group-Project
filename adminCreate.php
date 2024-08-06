@@ -73,7 +73,9 @@ if(!isset($_SESSION["username"]))
     </ul>
 </nav>
 
-<!-- CITE: https://www.youtube.com/watch?v=ShbHwaiyOps -->
+<!-- CITE: https://www.youtube.com/watch?v=ShbHwaiyOps
+This is very similar to register, but this time admins can select user type-->
+
 
 <br>
 <h3 style="text-align: center; color: #3f7778">Register Users</h3>

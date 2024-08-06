@@ -1,6 +1,7 @@
 #!/usr/local/bin/php
 <?php
 
+//refresh the page every 10 seconds, allowing for "live" updates
 header("refresh: 10;");
 
 $host = "127.0.0.1";
@@ -32,10 +33,8 @@ if(!isset($_SESSION["username"]))
 
 $data = mysqli_connect($host, $user, $password, $db);
 
-//test when id=1
-//MAKE SURE TO CHANGE THIS TO 'id'
 
-//https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
+//CITATION: https://learnsql.com/cookbook/how-to-order-by-date-in-mysql/#:~:text=Use%20the%20ORDER%20BY%20keyword,shown%20last%2C%20etc.).
 
 $sql_chats = "SELECT livechats.id, livechats.to_user, livechats.from_user, livechats.time, livechats.body, livechats.subject FROM livechats ORDER BY livechats.id DESC";
 
@@ -79,15 +78,16 @@ $result_chats = $data->query($sql_chats);
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
 
     <!--
+    CITATIONS:
     https://stackoverflow.com/questions/26924762/assigning-variables-to-sql-query-result
     https://www.w3schools.com/php/func_mysqli_fetch_assoc.asp
     https://stackoverflow.com/questions/4309950/how-to-align-input-forms-in-html
     -->
 
-
     <section class="container grey-text">
         <h4 class="center">Live Chat</h4>
 
+        <!-- Allow for new chats to be created -->
         <form class="white" action="e_addLiveChat.php?user=<?php echo $user; ?>" method="POST">
             <label style="display: inline-block; width: 100px; text-align: right;">Subject</label>
             <input type="text" name="subject">
@@ -100,6 +100,7 @@ $result_chats = $data->query($sql_chats);
         </form>
     </section>
     <br>
+    <!-- Display all previous chat items in the table -->
     <h4>Chat History:</h4>
     <?php
     if ($result_chats->num_rows > 0) {

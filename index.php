@@ -5,6 +5,8 @@ session_start();
 define('__HEADER_FOOTER_PHP__', true);
 ?>
 
+<!-- a rudimentary home page, where logged out visitors will automatically be directed to -->
+
 <!DOCTYPE html>
 <html lang="en">
 
