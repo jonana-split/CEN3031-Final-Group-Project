@@ -1,12 +1,16 @@
-<?php
+<!-- CITATION:
+https://www.youtube.com/watch?v=ShbHwaiyOps -->
 
+<?php
 $host = "127.0.0.1";
 $user = "root";
 $password = "";
 $db="login_it";
 
+//create a new user session
 session_start();
 
+//connect to database
 $data=mysqli_connect($host,$user,$password,$db);
 if($data===false)
 {
@@ -16,6 +20,7 @@ if($data===false)
 
 $mysqli = require __DIR__ . "/database.php";
 
+//find a user in users that has a matching username and password
 if($_SERVER["REQUEST_METHOD"] == "POST")
 {
     $username=$_POST["username"];
@@ -27,6 +32,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 
     $row=mysqli_fetch_array($result);
 
+    //for each usertype, if the password is correct redirect them to their respective home pages
     if($row["usertype"]=="user")
     {
         if(password_verify($password,$row["password_hash"])){
@@ -38,6 +44,11 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     {
         $_SESSION["username"]=$username;
         header("location:adminhome.php");
+    }
+    elseif($row["usertype"]=="employee")
+    {
+        $_SESSION["username"]=$username;
+        header("location:employeeHome.php");
     }
     else
     {
@@ -67,8 +78,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
             padding: 20px;
         }
 
-
-
     </style>
 </head>
 
@@ -83,8 +92,6 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="index.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
-
         <li class="nav-item" ><a class="nav-link" href="login.php" style="color: aliceblue; ">Login</a></li>
     </ul>
 </nav>
@@ -94,6 +101,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST")
 <br>
 <h3 style="text-align: center; color: #3f7778">Log In</h3>
 
+<!-- form to collect information and verify login -->
 <form method="POST" action="#">
     <div class="input-group">
         <label style="padding: 5px; margin: 5px;text-align: left; ">Username</label>

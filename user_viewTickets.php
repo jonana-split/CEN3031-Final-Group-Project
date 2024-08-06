@@ -1,3 +1,4 @@
+<!-- UNUSED FILE -->
 #!/usr/local/bin/php
 <?php
 $host = "127.0.0.1";
@@ -6,11 +7,32 @@ $password = "";
 $db="login_it";
 
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
+
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
     header("location:login.php");
 }
+
+
+$data = mysqli_connect($host, $user, $password, $db);
+
+$sql_chats = "SELECT chats.id, chats.to_user, chats.from_user, chats.time, chats.ticket_id, chats.body, chats.subject FROM chats";
+$result_chats = $data->query($sql_chats);
 
 ?>
 
@@ -40,7 +62,9 @@ if(!isset($_SESSION["username"]))
 
         <li class="nav-item" ><a class="nav-link" href="ticketCreation.php" style="color: aliceblue; ">Create Ticket</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="user_viewTickets.php" style="color: aliceblue; ">View Past Tickets</a></li>
+        <li class="nav-item" ><a class="nav-link" href="user_dash.php" style="color: aliceblue; ">View History</a></li>
+
+        <li class="nav-item" ><a class="nav-link" href="u_livechat.php" style="color: aliceblue; ">Live Chat</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: #98d8da; "><?php echo $_SESSION['username'] ?>'s Account</a></li>
 
@@ -51,7 +75,9 @@ if(!isset($_SESSION["username"]))
 <div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
     <h3>View Tickets</h3>
 
+    <button onclick="location.href='asynchChat_User.php?id=id'" class="button rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; " >Chat</button>
 
+    <br>
 
 </div>
 

@@ -1,6 +1,28 @@
 #!/usr/local/bin/php
 <?php
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
+
 session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="user")
+{
+    header("location:userhome.php");
+}else if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"]))
 {
@@ -8,6 +30,7 @@ if(!isset($_SESSION["username"]))
 }
 ?>
 
+<!-- Home page of administrators -->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,40 +55,48 @@ if(!isset($_SESSION["username"]))
     <ul class="navbar-nav">
         <li class="nav-item" ><a class="nav-link" href="adminhome.php" style="color: aliceblue; ">Home</a></li>
 
-        <li class="nav-item" ><a class="nav-link" href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" style="color: aliceblue; ">About</a></li>
-
         <li class="nav-item" ><a class="nav-link" href="adminCreate.php" style="color: aliceblue; ">Register Users</a></li>
 
         <li class="nav-item" ><a class="nav-link" href="admin_dash.php" style="color: aliceblue; ">View Tickets</a></li>
 
-        <!--    TOOK THIS FROM CODE I WROTE IN A PREVIOUS PROJECT, have to edit it. JUST PROOF OF CONCEPT HERE -->
-        <?php if (isset($_SESSION['username'])): ?>
-            <div class="dropdown">
-                <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo $_SESSION['username'] ?>'s Account
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "user_viewTickets.php" ?>">Dashboard</a></li>
-                    <li><a class="dropdown-item" style = "color: #1C5E33" href="<?php echo "logout.php" ?>">LogOut</a></li>
-                </ul>
-            </div>
-        <?php else: ?>
-            <li class="nav-item" ><a class="nav-link rounded" href="<?php echo "login.php" ?>" style = "color: #174142; border: 2px solid #3f7778;  display: inline-block; background-color: #f0f8ff; padding: 5px"> Login</a></li>
-        <?php endif; ?>
+        <li class="nav-item" ><a class="nav-link" href="logout.php" style="color: #98d8da; ">Logout <?php echo $_SESSION['username'] ?></a></li>
 
     </ul>
 </nav>
 
-<div class="justify-content-center text-center" style="margin-top: 50px; color: #174142">
-    <h5>Register Users Here</h5>
-    <h3>Create Admins, Employees, and Users</h3>
+<div class="section justify-content-center text-center" style="margin: 30px; color: #174142">
+
+    <h3 style="text-align: center; color: #3f7778">Administrator Home</h3>
     <br>
 
-    <p style="text-align: center"><a href="adminCreate.php">Register Users</a></p>
-
+    <h4>Welcome, <?php echo $_SESSION['username'] ?> !</h4>
     <br>
 
-    <a href="logout.php"> Logout :D </a>
+    <hr style="width: 50%; margin: auto; background-color: #3f7778">
+    <br>
+
+
+    <!-- Different options for admin actions -->
+    <div class="row" style="margin: 30px">
+        <div class="col-md justify-content-center text-center rounded" style="color: #174142; border: #5e979a solid 1px;margin: 10px; padding: 10px; background-color: #d2eeef">
+            <br>
+            <h5>To create new Users, Employees, or Administrators...</h5>
+            <h4>Register Users Here</h4>
+            <br>
+            <button onclick="location.href='adminCreate.php'" class="button rounded" style = "color: #5e979a; border: 2px solid #5e979a;  display: inline-block; padding: 5px">Register Users</button>
+            <br>
+            <br>
+        </div>
+        <div class="col-md justify-content-center text-center rounded" style="color: #174142; border: #5e979a solid 1px;margin: 10px; padding: 10px; background-color: #d2eeef">
+            <br>
+            <h5>Want to manage tickets, users, and schedules?</h5>
+            <h4>View your Administrator Dashboard</h4>
+            <br>
+            <button onclick="location.href='admin_dash.php'" class="button rounded" style = "color: #3f7778;border: 2px solid #5e979a;  display: inline-block; padding: 5px; " >View Dashboard</button>
+            <br>
+            <br>
+        </div>
+    </div>
 
 </div>
 

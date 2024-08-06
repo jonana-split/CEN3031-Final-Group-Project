@@ -1,27 +1,8 @@
+<!-- UNUSED FILE -->
+
 #!/usr/local/bin/php
 <?php
-$host = "127.0.0.1";
-$user = "root";
-$password = "";
-$db="login_it";
-
 session_start();
-
-$data=mysqli_connect($host,$user,$password,$db);
-
-$username=$_SESSION['username'];
-
-$sql="SELECT * FROM users WHERE username='".$username."'";
-
-$result=mysqli_query($data,$sql);
-
-$row=mysqli_fetch_array($result);
-
-if($row["usertype"]=="user")
-{
-    header("location:userhome.php");
-}
-
 define('__HEADER_FOOTER_PHP__', true);
 if(!isset($_SESSION["username"])) {
     header("location:login.php");
@@ -44,8 +25,8 @@ $user = $user_result->fetch_assoc();
 $user_id = $user['id'];
 
 // Fetch employee schedule
-//$schedule_query = "SELECT * FROM schedules WHERE username = '$username'";
-//$schedule_result = $data->query($schedule_query);
+$schedule_query = "SELECT * FROM tickets WHERE user = '$username'";
+$schedule_result = $data->query($schedule_query);
 
 // Fetch assigned tickets
 $assigned_tickets_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
@@ -56,7 +37,7 @@ $assigned_tickets_result = $data->query($assigned_tickets_query);
 //$chat_history_result = $data->query($chat_history_query);
 
 // Fetch logged hours
-$logged_hours_query = "SELECT * FROM tickets WHERE employeeid = '$username'";
+$logged_hours_query = "SELECT * FROM tickets WHERE user = '$username'";
 $logged_hours_result = $data->query($logged_hours_query);
 
 // Handle ticket updates
@@ -64,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $status = $data->real_escape_string($_POST['status']);
     $resolved_at = ($status === 'closed') ? 'NOW()' : 'NULL';
-    $sql = "UPDATE tickets SET status = '$status' WHERE id = $ticket_id";
+    $sql = "UPDATE tickets SET status = '$status', resolved_at = $resolved_at WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Ticket updated successfully.";
     } else {
@@ -76,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_ticket'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['log_hours'])) {
     $ticket_id = intval($_POST['ticket_id']);
     $hours = floatval($_POST['hours']);
-    $sql = "UPDATE tickets SET logged_hours = $hours WHERE id = $ticket_id";
+    $sql = "INSERT INTO time_logs (user_id, ticket_id, hours) VALUES ('$user_id', '$ticket_id', '$hours')";
     if ($data->query($sql) === TRUE) {
         echo "Hours logged successfully.";
     } else {
@@ -87,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['log_hours'])) {
 // Handle time estimates
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     $ticket_id = intval($_POST['ticket_id']);
-    $estimated_hours = $_POST['estimated_hours'];
-    $sql = "UPDATE tickets SET time_estimate = '$estimated_hours' WHERE id = $ticket_id";
+    $estimated_hours = floatval($_POST['estimated_hours']);
+    $sql = "UPDATE tickets SET estimated_hours = '$estimated_hours' WHERE id = $ticket_id";
     if ($data->query($sql) === TRUE) {
         echo "Time estimate updated successfully.";
     } else {
@@ -97,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 }
 
 ?>
-<!-- The home page where employees will automatically be directed to -->
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,20 +104,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             max-width: 900px;
             margin: 0 auto;
         }
-        table, th, td, tr{
-            border: #3f7778 solid 1px;
-        }
 
-        th{
-            background-color: #acd8da;
-        }
+
+
     </style>
 </head>
 
 <body style="font-family: K2D; background-color: #e0f2f3">
 
-<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px ;background-color: cadetblue; color: aliceblue">
-    <a style="text-decoration: none; color: aliceblue; font-size: xx-large " href="employeeHome.php">iTicket</a>
+<div class="jumbotron jumbotron-fluid text-center" style="margin-bottom:0; padding: 40px; background-color: cadetblue; color: aliceblue">
+    <a style="text-decoration: none; color: aliceblue; font-size: xx-large" href="employee_dash.php">iTicket</a>
 </div>
 
 <nav class="navbar navbar-expand-sm justify-content-center" style=" background-color: #3f7778; color: #f0f8ff">
@@ -154,24 +131,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
 
 <div class="section">
     <h3 style="text-align: center; color: #3f7778">Employee Dashboard</h3>
-    <br>
-    <h4 style="text-align: center">Welcome, <b><?php echo $user['username']; ?></b>!</h4>
-    <br>
-    <hr style="margin: auto; background-color: #3f7778">
+    <h4>Welcome, <?php echo $user['username']; ?>!</h4>
+    <hr>
 
-    <br>
-    <h5 style="text-align: center"><a href="calendar.php">View Calendar</a></h5>
-    <br>
+    <h5>Availability/Scheduling</h5>
+    <div id="calendar"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: [
+                    <?php
+                    while ($row = $schedule_result->fetch_assoc()) {
+                        echo "{title: 'Available', start: '" . $row['date'] . "'},";
+                    }
+                    ?>
+                ]
+            });
+            calendar.render();
+        });
+    </script>
+    <hr>
 
-    <hr style="margin: auto; background-color: #3f7778">
-
-    <br>
-    <h5 style="text-align: center"><b>Assigned Tickets</b></h5>
+    <h5>Assigned Tickets</h5>
     <?php
     if ($assigned_tickets_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th><th>Messages</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>ID</th><th>Type</th><th>Description</th><th>Status</th><th>Priority</th><th>Update Status</th><th>Log Hours</th><th>Time Estimate</th></tr>";
         while ($row = $assigned_tickets_result->fetch_assoc()) {
-            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td>
+            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["type"] . "</td><td>" . $row["description"] . "</td><td>" . $row["status"] . "</td><td>" . $row["priority"] . "</td>
             <td>
                 <form method='POST' action=''>
                     <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
@@ -194,12 +182,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
             <td>
                 <form method='POST' action=''>
                     <input type='hidden' name='ticket_id' value='" . $row["id"] . "'>
-                    <input type='number' name='estimated_hours' step='0.1' min='0' required value='" . $row["time_estimate"] . "'>
+                    <input type='number' name='estimated_hours' step='0.1' min='0' required value='" . $row["estimated_hours"] . "'>
                     <button type='submit' name='estimate_time' class='btn btn-info'>Estimate Time</button>
                 </form>
             </td>
-            <td><button onclick=\"location.href='e_asynchChat.php?id=".$row['id']."&user=".$row['user']."'\">Chat</button></td>
-
             </tr>";
         }
         echo "</table>";
@@ -207,13 +193,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
         echo "<p>No assigned tickets found.</p>";
     }
     ?>
-    <hr style="margin: auto; background-color: #3f7778">
+    <hr>
 
-    <br>
-    <h5 style="text-align: center"><b>Logged Hours</b></h5>
+    <h5>Chat History</h5>
+    <!--    --><?php
+    //    if ($chat_history_result->num_rows > 0) {
+    //        echo "<table class='table table-bordered'><tr><th>ID</th><th>Message</th><th>Date</th></tr>";
+    //        while ($row = $chat_history_result->fetch_assoc()) {
+    //            echo "<tr><td>" . $row["id"] . "</td><td>" . $row["message"] . "</td><td>" . $row["date"] . "</td></tr>";
+    //        }
+    //        echo "</table>";
+    //    } else {
+    //        echo "<p>No chat history found.</p>";
+    //    }
+    //    ?>
+    <hr>
+
+    <h5>Logged Hours</h5>
     <?php
     if ($logged_hours_result->num_rows > 0) {
-        echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours Logged</th><th>Due Date</th></tr>";
+        echo "<table class='table table-bordered'><tr><th>Ticket ID</th><th>Hours</th><th>Date Logged</th></tr>";
         while ($row = $logged_hours_result->fetch_assoc()) {
             echo "<tr><td>" . $row["id"] . "</td><td>" . $row["logged_hours"] . "</td><td>" . $row["date"] . "</td></tr>";
         }
@@ -224,14 +223,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estimate_time'])) {
     ?>
 </div>
 
-<br>
-
 <footer class="text-center" style="background-color: #3f7778; color: #F0F8FFFF; padding: 15px">
-
     <p>&copy Debug Divas 2024</p>
     <p>CEN3031 Final Project</p>
-
 </footer>
-</body>
 
+</body>
 </html>

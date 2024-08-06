@@ -2,6 +2,31 @@
 
 <?php
 
+$host = "127.0.0.1";
+$user = "root";
+$password = "";
+$db="login_it";
+
+session_start();
+
+$data=mysqli_connect($host,$user,$password,$db);
+
+$username=$_SESSION['username'];
+
+$sql="SELECT * FROM users WHERE username='".$username."'";
+
+$result=mysqli_query($data,$sql);
+
+$row=mysqli_fetch_array($result);
+
+if($row["usertype"]=="user")
+{
+    header("location:userhome.php");
+}else if($row["usertype"]=="employee"){
+    header("location:employeehome.php");
+}
+
+//CITATION:
 //https://www.youtube.com/watch?v=5L9UhOnuos0
 
 //validate username
@@ -38,6 +63,7 @@ $password_hash = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
 $mysqli = require __DIR__ . "/database.php";
 
+//assign user type based on input
 if($_POST["userType"] == "admin"){
     $usertype = "admin";
 }elseif ($_POST["userType"] == "employee"){
@@ -46,6 +72,7 @@ if($_POST["userType"] == "admin"){
     $usertype = "user";
 }
 
+//insert the newly created user into the database
 $sql= "INSERT INTO users (username, email, password_hash, usertype) VALUES (?,?,?,?)";
 
 $stmt = $mysqli->stmt_init();
